@@ -1,11 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  serverExternalPackages: ["pdf-parse", "@napi-rs/canvas", "pdfjs-dist"],
   turbopack: {
     root: __dirname,
   },
   outputFileTracingIncludes: {
     "*": ["./node_modules/@swc/helpers/**/*"],
+    "/api/statements/parse": [
+      "./node_modules/pdf-parse/**/*",
+      "./node_modules/pdfjs-dist/**/*",
+      "./node_modules/@napi-rs/canvas/**/*",
+    ],
   },
 };
 

@@ -1,5 +1,5 @@
 import { streamText } from "ai";
-import { anthropic } from "@ai-sdk/anthropic";
+import { claudeModel } from "@/lib/ai/model";
 import { createClient } from "@/lib/supabase/server";
 import { buildChatContext, CHAT_SYSTEM_PROMPT } from "@/lib/ai/chat-context";
 import type { Transaction } from "@/lib/types/database";
@@ -57,7 +57,7 @@ export async function POST(request: Request) {
   const context = buildChatContext((transactions ?? []) as Transaction[]);
 
   const result = streamText({
-    model: anthropic("claude-sonnet-4-20250514"),
+    model: claudeModel,
     system: `${CHAT_SYSTEM_PROMPT}\n\n${context}`,
     messages,
     onFinish: async ({ text }) => {

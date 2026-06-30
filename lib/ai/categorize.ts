@@ -1,6 +1,6 @@
 import { generateObject } from "ai";
-import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
+import { claudeModel } from "@/lib/ai/model";
 import type { ParsedTransaction } from "@/lib/types/database";
 import { SYSTEM_CATEGORIES } from "@/lib/types/database";
 
@@ -43,7 +43,7 @@ export async function extractTransactionsFromText(
   fileType: "csv" | "pdf"
 ): Promise<{ transactions: ParsedTransaction[]; periodStart?: string; periodEnd?: string }> {
   const { object } = await generateObject({
-    model: anthropic("claude-sonnet-4-20250514"),
+    model: claudeModel,
     schema: transactionSchema,
     prompt: `Extract all financial transactions from this bank statement ${fileType.toUpperCase()} content.
 Rules:
@@ -73,7 +73,7 @@ export async function categorizeTransactions(
   const categoryList = SYSTEM_CATEGORIES.map((c) => c.slug).join(", ");
 
   const { object } = await generateObject({
-    model: anthropic("claude-sonnet-4-20250514"),
+    model: claudeModel,
     schema: categorizeSchema,
     prompt: `Categorize each transaction. Use only these categories: ${categoryList}.
 Income transactions should use category "income".

@@ -1,7 +1,10 @@
+import { getPath } from "pdf-parse/worker";
+import { PDFParse } from "pdf-parse";
 import type { ParsedTransaction } from "@/lib/types/database";
 
+PDFParse.setWorker(getPath());
+
 export async function extractPdfText(buffer: Buffer): Promise<string> {
-  const { PDFParse } = await import("pdf-parse");
   const parser = new PDFParse({ data: buffer });
   const result = await parser.getText();
   await parser.destroy();
