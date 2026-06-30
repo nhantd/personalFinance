@@ -74,7 +74,7 @@ export const MOCK_CATEGORIES = [
 
 export const MOCK_FLOW = {
   inflows: [
-    { label: "Salary", pct: 88, color: "bg-primary" },
+    { label: "Salary", pct: 88, color: "bg-soft" },
     { label: "Other", pct: 12, color: "bg-soft" },
   ],
   outflows: [

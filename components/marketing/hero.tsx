@@ -31,11 +31,7 @@ export function HeroSection() {
             </p>
 
             <div className="mt-8">
-              <ButtonLink
-                size="lg"
-                href="/login"
-                className={`${brandClasses.btnLaunch} rounded-full px-8`}
-              >
+              <ButtonLink size="lg" href="/login" className={brandClasses.btnLaunch}>
                 {BRAND.ctaSecondary}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </ButtonLink>

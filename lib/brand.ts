@@ -15,19 +15,22 @@ export const brandClasses = {
   card: "rounded-xl border border-border bg-card shadow-sm",
   cardHover:
     "rounded-xl border border-border bg-card shadow-sm transition-shadow hover:shadow-md hover:border-soft/40",
-  btnPrimary: "bg-primary text-primary-foreground hover:bg-primary/90",
-  btnLaunch: "bg-primary text-primary-foreground hover:bg-primary/90 font-medium rounded-full",
-  btnHeader: "bg-brand-dark text-white hover:bg-brand-dark/90 font-medium rounded-full",
+  btnPrimary:
+    "rounded-md border-0 bg-primary font-medium text-primary-foreground shadow-none transition-colors hover:bg-primary/90 active:translate-y-0",
+  btnLaunch:
+    "h-11 rounded-full border-0 bg-primary px-8 text-sm font-medium tracking-wide text-primary-foreground shadow-none ring-1 ring-inset ring-white/15 transition-colors hover:bg-primary/90 hover:text-primary-foreground active:translate-y-0",
+  btnHeader:
+    "h-9 rounded-full border-0 bg-brand-dark px-5 text-sm font-medium text-white shadow-none ring-1 ring-inset ring-white/10 transition-colors hover:bg-brand-dark/90 hover:text-white active:translate-y-0",
   link: "text-accent hover:text-accent/80 font-medium",
   income: "text-success",
-  highlight: "text-primary",
+  highlight: "text-accent",
   insightBg: "bg-soft/20",
   creepRow: "bg-highlight-warm-bg",
   mockCard: "rounded-lg border border-foreground/15 bg-card",
   mockCardHeader: "flex items-center justify-between border-b border-foreground/10 px-4 py-2.5",
   mockSerifStat: "font-heading text-2xl font-light tracking-tight",
   mockInsightChip:
-    "inline-flex items-center gap-1.5 rounded-full bg-brand-dark px-3 py-1.5 text-xs font-medium text-white",
+    "inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/8 px-3 py-1.5 text-xs font-medium text-foreground",
   tagSubscription: "bg-tag-subscription-bg text-tag-subscription",
   tagGoal: "bg-tag-goal-bg text-success",
   tagLoan: "border border-chart-blue/30 bg-transparent text-chart-blue",

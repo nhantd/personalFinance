@@ -12,7 +12,7 @@ export function MockStepUpload() {
         <p className="mt-1 truncate font-mono text-[10px] text-muted-foreground">{MOCK_UPLOAD_FILE}</p>
       </div>
       <div className="mt-3 h-1 overflow-hidden rounded-full bg-muted">
-        <div className="h-full w-2/3 animate-bar-grow rounded-full bg-primary" />
+        <div className="h-full w-2/3 animate-bar-grow rounded-full bg-soft" />
       </div>
     </div>
   );

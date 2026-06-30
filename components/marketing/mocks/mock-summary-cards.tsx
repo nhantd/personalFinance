@@ -50,7 +50,7 @@ export function MockSummaryCards() {
           Income {MOCK_BUDGET.income} · {MOCK_BUDGET.categories} categories
         </p>
         <div className="mt-3 flex items-end gap-3">
-          <div className="flex flex-1 flex-col justify-center rounded-md bg-brand-dark px-3 py-2.5">
+          <div className="flex flex-1 flex-col justify-center rounded-md bg-chart-blue px-3 py-2.5">
             <p className="text-[10px] font-semibold uppercase tracking-widest text-white/70">Budget</p>
             <p className="mt-0.5 font-heading text-lg font-light text-white">{MOCK_BUDGET.budget}</p>
           </div>
