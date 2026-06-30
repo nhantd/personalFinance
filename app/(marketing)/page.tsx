@@ -1,21 +1,21 @@
 import { HeroSection } from "@/components/marketing/hero";
+import { PreFooterCta } from "@/components/marketing/pre-footer-cta";
 import {
-  CtaSection,
+  AskSection,
   FeaturesSection,
   HowItWorksSection,
   PrivacySection,
-  SupportedBanksSection,
 } from "@/components/marketing/sections";
 
 export default function HomePage() {
   return (
     <main>
       <HeroSection />
-      <SupportedBanksSection />
-      <HowItWorksSection />
       <FeaturesSection />
+      <HowItWorksSection />
       <PrivacySection />
-      <CtaSection />
+      <AskSection />
+      <PreFooterCta />
     </main>
   );
 }

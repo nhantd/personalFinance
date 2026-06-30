@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Upload, FileText, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { brandClasses } from "@/lib/brand";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -138,7 +139,7 @@ function UploadForm({ accounts, defaultCurrency }: UploadFormProps) {
           <div
             onDragOver={(e) => e.preventDefault()}
             onDrop={handleDrop}
-            className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-border/60 bg-muted/20 px-6 py-12 transition-colors hover:border-emerald-500/40"
+            className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border bg-muted/30 px-6 py-12 transition-colors hover:border-primary/50 hover:bg-primary/5"
           >
             <Upload className="h-10 w-10 text-muted-foreground" />
             <p className="mt-4 text-sm font-medium">
@@ -200,7 +201,7 @@ function UploadForm({ accounts, defaultCurrency }: UploadFormProps) {
               <div className="space-y-2">
                 <Label>Institution (optional)</Label>
                 <Input
-                  placeholder="Chase, Barclays, Monzo..."
+                  placeholder="Chase, Bank of America, Wells Fargo..."
                   value={institution}
                   onChange={(e) => setInstitution(e.target.value)}
                 />
@@ -211,7 +212,7 @@ function UploadForm({ accounts, defaultCurrency }: UploadFormProps) {
           {stage !== "idle" && stage !== "error" && (
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-sm">
-                <Loader2 className="h-4 w-4 animate-spin text-emerald-400" />
+                <Loader2 className="h-4 w-4 animate-spin text-primary" />
                 {stage === "uploading" && "Uploading..."}
                 {stage === "parsing" && "AI is reading your statement..."}
                 {stage === "complete" && "Done!"}
@@ -227,10 +228,10 @@ function UploadForm({ accounts, defaultCurrency }: UploadFormProps) {
           <Button
             onClick={handleUpload}
             disabled={!file || stage === "uploading" || stage === "parsing"}
-            className="w-full bg-emerald-600 hover:bg-emerald-500"
+            className={`w-full ${brandClasses.btnPrimary}`}
           >
             <FileText className="mr-2 h-4 w-4" />
-            Upload & decode
+            Upload & analyse
           </Button>
         </CardContent>
       </Card>

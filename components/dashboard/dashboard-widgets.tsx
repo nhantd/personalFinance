@@ -14,15 +14,18 @@ import { formatCurrencyPlain, type FinancialSummary } from "@/lib/finance/aggreg
 import type { Currency, Transaction } from "@/lib/types/database";
 import { SYSTEM_CATEGORIES } from "@/lib/types/database";
 import { cn } from "@/lib/utils";
+import { COLORS } from "@/lib/colors";
+import { brandClasses } from "@/lib/brand";
 
 const CHART_COLORS = [
-  "#34d399",
-  "#60a5fa",
-  "#a78bfa",
-  "#f472b6",
-  "#fb923c",
-  "#facc15",
-  "#94a3b8",
+  COLORS.forest,
+  COLORS.textLink,
+  COLORS.mint,
+  COLORS.success,
+  COLORS.tealMid,
+  COLORS.text,
+  COLORS.paleGreen,
+  COLORS.tealLight,
 ];
 
 interface SummaryCardsProps {
@@ -33,17 +36,17 @@ interface SummaryCardsProps {
 export function SummaryCards({ summary, currency }: SummaryCardsProps) {
   return (
     <div className="grid gap-4 sm:grid-cols-3">
-      <Card className="border-border/60 bg-card/50">
+      <Card className={brandClasses.card}>
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium text-muted-foreground">Income</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-2xl font-bold text-emerald-400">
+          <p className={`text-2xl font-bold ${brandClasses.income}`}>
             {formatCurrencyPlain(summary.totalIncome, currency)}
           </p>
         </CardContent>
       </Card>
-      <Card className="border-border/60 bg-card/50">
+      <Card className={brandClasses.card}>
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium text-muted-foreground">Outflows</CardTitle>
         </CardHeader>
@@ -53,7 +56,7 @@ export function SummaryCards({ summary, currency }: SummaryCardsProps) {
           </p>
         </CardContent>
       </Card>
-      <Card className="border-border/60 bg-card/50">
+      <Card className={brandClasses.card}>
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium text-muted-foreground">Surplus</CardTitle>
         </CardHeader>
@@ -61,7 +64,7 @@ export function SummaryCards({ summary, currency }: SummaryCardsProps) {
           <p
             className={cn(
               "text-2xl font-bold",
-              summary.surplus >= 0 ? "text-emerald-400" : "text-destructive"
+              summary.surplus >= 0 ? brandClasses.income : "text-destructive"
             )}
           >
             {summary.surplus >= 0 ? "+" : ""}
@@ -87,7 +90,7 @@ export function CategoryChart({ summary, currency }: CategoryChartProps) {
 
   if (data.length === 0) {
     return (
-      <Card className="border-border/60 bg-card/50">
+      <Card className={brandClasses.card}>
         <CardHeader>
           <CardTitle>Spending by category</CardTitle>
         </CardHeader>
@@ -164,7 +167,7 @@ export function RecentTransactions({ transactions, currency }: RecentTransaction
                     {tx.date} · {SYSTEM_CATEGORIES.find((c) => c.slug === tx.category)?.label ?? tx.category}
                   </p>
                 </div>
-                <p className={cn("text-sm font-mono", tx.is_income ? "text-emerald-400" : "")}>
+                <p className={cn("text-sm font-mono", tx.is_income ? brandClasses.income : "")}>
                   {tx.is_income ? "+" : "−"}
                   {formatCurrencyPlain(Math.abs(Number(tx.amount)), currency)}
                 </p>

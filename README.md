@@ -1,4 +1,4 @@
-# Decode — Personal Finance POC
+# Monae — Personal Finance POC
 
 Privacy-first personal finance app. Upload bank statements (CSV/PDF), get AI categorization, spending insights, and conversational Q&A — no bank login ever.
 
@@ -73,7 +73,7 @@ Sample CSV files are in `samples/`:
 - **AI parsing** — Extracts & categorizes transactions
 - **Dashboard** — Income, outflows, surplus, category chart
 - **Transactions** — Full list with category override
-- **Ask Decode** — Chat grounded in your data
+- **Ask Monae** — Chat grounded in your data
 - **Settings** — Currency preference, one-click data wipe
 
 ## Project structure

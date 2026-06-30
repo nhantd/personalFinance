@@ -20,6 +20,7 @@ import {
 } from "@/lib/finance/aggregates";
 import type { Currency, Transaction } from "@/lib/types/database";
 import { ButtonLink } from "@/components/ui/button-link";
+import { brandClasses } from "@/lib/brand";
 import { Upload } from "lucide-react";
 
 interface DashboardClientProps {
@@ -73,7 +74,7 @@ export function DashboardClient({ transactions, currency }: DashboardClientProps
           <p className="mt-2 text-sm text-muted-foreground">
             Upload your first bank statement to see spending insights.
           </p>
-          <ButtonLink href="/upload" className="mt-6 bg-emerald-600 hover:bg-emerald-500">
+          <ButtonLink href="/upload" className={`mt-6 ${brandClasses.btnPrimary}`}>
             Upload statement
           </ButtonLink>
         </div>

@@ -33,6 +33,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import type { Currency, Profile } from "@/lib/types/database";
+import { brandClasses } from "@/lib/brand";
 
 interface SettingsFormProps {
   profile: Profile;
@@ -108,7 +109,7 @@ export function SettingsForm({ profile }: SettingsFormProps) {
           <Button
             onClick={handleSave}
             disabled={saving}
-            className="bg-emerald-600 hover:bg-emerald-500"
+            className={brandClasses.btnPrimary}
           >
             {saving ? "Saving..." : "Save changes"}
           </Button>

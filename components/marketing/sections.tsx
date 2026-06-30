@@ -1,38 +1,85 @@
-import { BarChart3, MessageSquare, Shield, Upload } from "lucide-react";
+import { MessageSquare } from "lucide-react";
+import { MockAskInput } from "@/components/marketing/mocks/mock-ask-input";
+import { MockChatSnippet } from "@/components/marketing/mocks/mock-chat-snippet";
+import { MockDashboardChart } from "@/components/marketing/mocks/mock-dashboard-chart";
+import { MockPrivacyBadge } from "@/components/marketing/mocks/mock-privacy-badge";
+import { MockSummaryCards } from "@/components/marketing/mocks/mock-summary-cards";
+import { MockTransactionList } from "@/components/marketing/mocks/mock-transaction-list";
+import { MockUploadDropzone } from "@/components/marketing/mocks/mock-upload-dropzone";
+import { brandClasses, BRAND } from "@/lib/brand";
+import { MARKETING_COPY } from "@/lib/marketing/copy";
+import { cn } from "@/lib/utils";
 
-const steps = [
+const FEATURE_MOCKS = {
+  spending: MockDashboardChart,
+  budget: MockSummaryCards,
+  ask: MockChatSnippet,
+  privacy: MockPrivacyBadge,
+} as const;
+
+const ASK_EXAMPLES = [
   {
-    icon: Upload,
-    title: "Upload",
-    description: "Download your statement from any bank. Drop CSV or PDF — we never ask for login credentials.",
+    question: "How much did I spend on subscriptions last month?",
+    answer: (
+      <>
+        <span className="font-semibold text-foreground">$127.42</span> across 4 recurring charges.
+      </>
+    ),
   },
   {
-    icon: BarChart3,
-    title: "AI reads",
-    description: "Every line is parsed and categorised. Income, outflows, and patterns surface in seconds.",
+    question: "Am I spending more than I earn?",
+    answer: (
+      <>
+        Surplus of <span className="font-semibold text-success">$1,847</span> this month — income
+        exceeds outflows.
+      </>
+    ),
   },
   {
-    icon: MessageSquare,
-    title: "Ask anything",
-    description: "Chat with your data. Answers computed from your real transactions, not generic advice.",
+    question: "What's my biggest expense category?",
+    answer: (
+      <>
+        Housing at <span className="font-semibold text-foreground">$1,850</span>, followed by
+        groceries at $312.
+      </>
+    ),
   },
 ];
 
+const SUGGESTED_QUESTIONS = [
+  "How much did I spend on subscriptions last month?",
+  "Am I spending more than I earn?",
+  "What's my biggest expense category?",
+];
+
 export function HowItWorksSection() {
+  const { howItWorks } = MARKETING_COPY;
+
   return (
-    <section id="how-it-works" className="border-b border-border/50 py-20">
+    <section id="how-it-works" className="border-b border-border bg-muted/40 py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <p className="font-mono text-xs uppercase tracking-wider text-emerald-400">How it works</p>
-        <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-          Three steps. No bank login.
-        </h2>
-        <div className="mt-12 grid gap-8 md:grid-cols-3">
-          {steps.map((step, i) => (
-            <div key={step.title} className="relative rounded-xl border border-border/60 bg-card/30 p-6">
-              <span className="font-mono text-xs text-muted-foreground">0{i + 1}</span>
-              <step.icon className="mt-4 h-8 w-8 text-emerald-400" />
+        <p className={brandClasses.label}>{howItWorks.label}</p>
+        <h2 className={`mt-3 ${brandClasses.heading}`}>{howItWorks.heading}</h2>
+        <p className="mt-4 max-w-xl text-muted-foreground">{howItWorks.subline}</p>
+        <div className="mt-14 grid gap-8 md:grid-cols-3">
+          {howItWorks.steps.map((step, i) => (
+            <div key={step.title} className="flex flex-col">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
+                {i + 1}
+              </span>
               <h3 className="mt-4 text-lg font-semibold">{step.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{step.description}</p>
+              <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
+                {step.description}
+              </p>
+              <div className="mt-5">
+                {i === 0 && <MockUploadDropzone />}
+                {i === 1 && (
+                  <div className={`${brandClasses.card} p-3`}>
+                    <MockTransactionList compact />
+                  </div>
+                )}
+                {i === 2 && <MockAskInput />}
+              </div>
             </div>
           ))}
         </div>
@@ -41,54 +88,37 @@ export function HowItWorksSection() {
   );
 }
 
-const features = [
-  {
-    id: "spending",
-    num: "01",
-    title: "Spending",
-    description: "See where every pound and dollar goes. Category breakdowns, recurring charges, and month-over-month trends.",
-  },
-  {
-    id: "budget",
-    num: "02",
-    title: "Budget snapshot",
-    description: "Income vs outflows at a glance. Know your surplus before the month ends.",
-  },
-  {
-    id: "ask",
-    num: "03",
-    title: "Ask Decode",
-    description: "Natural language queries over your real data. How much on subscriptions? Can I afford the trip?",
-  },
-  {
-    id: "privacy",
-    num: "04",
-    title: "Privacy architecture",
-    description: "Encrypted at rest. Row-level security. One-click wipe. Your bank never meets our servers.",
-  },
-];
-
 export function FeaturesSection() {
+  const { features } = MARKETING_COPY;
+
   return (
-    <section id="features" className="border-b border-border/50 py-20">
+    <section id="features" className="border-b border-border py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <p className="font-mono text-xs uppercase tracking-wider text-emerald-400">Core systems</p>
-        <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-          Replaces spreadsheets
-          <br />
-          and subscription apps.
-        </h2>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2">
-          {features.map((f) => (
-            <div
-              key={f.id}
-              className="group rounded-xl border border-border/60 bg-card/30 p-6 transition-colors hover:border-emerald-500/30"
-            >
-              <span className="font-mono text-xs text-emerald-400">{f.num} / {f.title.toUpperCase()}</span>
-              <h3 className="mt-3 text-xl font-semibold">{f.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{f.description}</p>
-            </div>
-          ))}
+        <p className={brandClasses.label}>{features.label}</p>
+        <h2 className={`mt-3 ${brandClasses.heading}`}>{features.heading}</h2>
+        <p className="mt-4 max-w-xl text-muted-foreground">{features.subline}</p>
+        <div className="mt-16 space-y-20">
+          {MARKETING_COPY.featureItems.map((f, i) => {
+            const Mock = FEATURE_MOCKS[f.id as keyof typeof FEATURE_MOCKS];
+            const mockFirst = i % 2 === 1;
+            return (
+              <div
+                key={f.id}
+                className={cn(
+                  "grid items-center gap-10 lg:grid-cols-2 lg:gap-16",
+                  mockFirst && "lg:[direction:rtl]"
+                )}
+              >
+                <div className={cn(mockFirst && "lg:[direction:ltr]")}>
+                  <Mock />
+                </div>
+                <div className={cn(mockFirst && "lg:[direction:ltr]")}>
+                  <h3 className="text-2xl font-semibold">{f.title}</h3>
+                  <p className="mt-3 leading-relaxed text-muted-foreground">{f.description}</p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -97,102 +127,68 @@ export function FeaturesSection() {
 
 export function PrivacySection() {
   return (
-    <section id="privacy" className="border-b border-border/50 py-20">
+    <section id="privacy" className="border-b border-border bg-muted/40 py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <div>
-            <p className="font-mono text-xs uppercase tracking-wider text-emerald-400">
-              Privacy architecture
-            </p>
-            <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-              Your bank never
-              <br />
-              meets our servers.
+            <p className={brandClasses.label}>Privacy</p>
+            <h2 className={`mt-3 ${brandClasses.heading}`}>
+              Your data stays yours
             </h2>
-            <p className="mt-4 text-muted-foreground">
-              Most finance apps want your bank login. We never ask. You download statements yourself
-              and upload when you choose.
+            <p className="mt-4 leading-relaxed text-muted-foreground">
+              Your statements, your upload, your call. {BRAND.name} encrypts your data, never
+              sells it, and lets you delete everything with one click in Settings.
             </p>
           </div>
-          <div className="space-y-4">
-            {[
-              { icon: Shield, label: "No credential exposure", detail: "Zero bank login screens. Ever." },
-              { icon: Upload, label: "You hold the data", detail: "Download CSV/PDF from your bank, upload on your terms." },
-              { icon: Shield, label: "Encrypted at rest", detail: "Row-level security. One-click data wipe in settings." },
-            ].map((item) => (
-              <div
-                key={item.label}
-                className="flex gap-4 rounded-xl border border-border/60 bg-card/30 p-4"
-              >
-                <item.icon className="h-5 w-5 shrink-0 text-emerald-400" />
-                <div>
-                  <p className="font-medium">{item.label}</p>
-                  <p className="text-sm text-muted-foreground">{item.detail}</p>
+          <MockPrivacyBadge />
+        </div>
+        <p className="mt-12 text-center text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+          No connection · No API · No screen-scraping · Ever
+        </p>
+      </div>
+    </section>
+  );
+}
+
+export function AskSection() {
+  return (
+    <section id="ask" className="border-b border-border py-20">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+          <div>
+            <p className={brandClasses.label}>Ask Monae</p>
+            <h2 className={`mt-3 ${brandClasses.heading}`}>
+              Ask anything. Answered from your numbers.
+            </h2>
+            <p className="mt-4 max-w-md leading-relaxed text-muted-foreground">
+              Plain-language questions over your uploaded statements — not generic advice. Every
+              answer is computed from your real transactions.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-2">
+              {SUGGESTED_QUESTIONS.map((q) => (
+                <span
+                  key={q}
+                  className="rounded-full border border-border bg-muted px-3 py-1.5 text-xs text-muted-foreground"
+                >
+                  {q}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className={`${brandClasses.card} space-y-4 p-5`}>
+            {ASK_EXAMPLES.map((ex) => (
+              <div key={ex.question} className="space-y-2">
+                <div className="rounded-lg bg-muted px-4 py-3 text-sm text-foreground">
+                  {ex.question}
+                </div>
+                <div className="flex gap-2 px-1">
+                  <MessageSquare className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                  <p className="text-sm leading-relaxed text-muted-foreground">{ex.answer}</p>
                 </div>
               </div>
             ))}
           </div>
-        </div>
-        <p className="mt-10 text-center font-mono text-xs text-muted-foreground">
-          NO CONNECTION · NO API · NO SCREEN-SCRAPING · EVER
-        </p>
-      </div>
-    </section>
-  );
-}
-
-export function CtaSection() {
-  return (
-    <section className="py-20">
-      <div className="mx-auto max-w-6xl px-4 text-center sm:px-6">
-        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          Take control of your money, today.
-        </h2>
-        <p className="mx-auto mt-4 max-w-lg text-muted-foreground">
-          Completely free for the POC. Drop a CSV and Decode decodes it — first insights in about three minutes.
-        </p>
-        <div className="mt-8 flex flex-wrap justify-center gap-4">
-          <a
-            href="/signup"
-            className="inline-flex h-11 items-center justify-center rounded-lg bg-emerald-600 px-8 text-sm font-medium text-white hover:bg-emerald-500"
-          >
-            Get started — free
-          </a>
-        </div>
-        <div className="mt-10 flex justify-center gap-12 text-sm">
-          <div>
-            <p className="text-muted-foreground">SETUP TIME</p>
-            <p className="font-mono font-semibold">3–5 MIN</p>
-          </div>
-          <div>
-            <p className="text-muted-foreground">PRICE</p>
-            <p className="font-mono font-semibold">£0.00</p>
-          </div>
-          <div>
-            <p className="text-muted-foreground">BANK LOGIN</p>
-            <p className="font-mono font-semibold text-emerald-400">NEVER</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-export function SupportedBanksSection() {
-  const banks = ["Chase", "Barclays", "Monzo", "Revolut", "HSBC", "Amex", "+ more"];
-  return (
-    <section className="border-b border-border/50 py-12">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <p className="text-center text-sm text-muted-foreground">READS STATEMENTS FROM</p>
-        <div className="mt-4 flex flex-wrap justify-center gap-3">
-          {banks.map((bank) => (
-            <span
-              key={bank}
-              className="rounded-full border border-border/60 px-4 py-1.5 text-sm text-muted-foreground"
-            >
-              {bank}
-            </span>
-          ))}
         </div>
       </div>
     </section>

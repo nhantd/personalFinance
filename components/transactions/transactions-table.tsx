@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { formatCurrencyPlain } from "@/lib/finance/aggregates";
+import { brandClasses } from "@/lib/brand";
 import { SYSTEM_CATEGORIES, type Currency, type Transaction } from "@/lib/types/database";
 import { cn } from "@/lib/utils";
 
@@ -90,7 +91,7 @@ export function TransactionsTable({ initialTransactions, currency }: Transaction
                 <TableCell
                   className={cn(
                     "text-right font-mono",
-                    tx.is_income ? "text-emerald-400" : ""
+                    tx.is_income ? brandClasses.income : ""
                   )}
                 >
                   {tx.is_income ? "+" : "−"}
