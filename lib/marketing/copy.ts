@@ -20,48 +20,66 @@ export const MARKETING_COPY = {
     subline: "Download a statement from your bank, upload it, and ask questions in plain English.",
     steps: [
       {
-        title: "Upload a statement",
-        description:
-          "Download CSV or PDF from any bank and drop it in. Your credentials never leave your bank.",
+        index: "01",
+        title: "Upload",
+        description: "Drop a CSV or PDF from any bank — credentials stay with your bank.",
       },
       {
-        title: "We categorize every line",
-        description:
-          "Every transaction is parsed and tagged — income, groceries, subscriptions, and more in seconds.",
+        index: "02",
+        title: "Categorize",
+        description: "Every line parsed and tagged in seconds.",
       },
       {
-        title: "Ask Monae anything",
-        description:
-          "Query your real numbers in plain language. Answers grounded in your data, not generic advice.",
+        index: "03",
+        title: "Ask",
+        description: "Plain-language answers from your real numbers.",
       },
     ],
   },
   featureItems: [
     {
       id: "spending",
-      title: "Spending intelligence",
-      description:
-        "Category breakdowns, recurring charge detection, and month-over-month trends — computed from your statements.",
+      title: "Spending",
+      subtitle: "Category breakdowns and month-over-month trends",
     },
     {
       id: "budget",
-      title: "Financial snapshot",
-      description:
-        "Income, outflows, and surplus at a glance. Know where you stand before the month ends.",
+      title: "Budget",
+      subtitle: "Income, spending, and cash left over",
     },
     {
       id: "ask",
       title: "Ask Monae",
-      description:
-        "Natural language queries over your real data. How much on subscriptions? Can I afford the trip?",
-    },
-    {
-      id: "privacy",
-      title: "Privacy by architecture",
-      description:
-        "Your data stays yours — encrypted at rest, row-level security, and a one-click wipe whenever you want.",
+      subtitle: "Plain-language answers from your statements",
     },
   ],
+  askSection: {
+    suggestedQuestions: [
+      "What's my largest spending category this month?",
+      "Am I ahead or behind this month?",
+      "Where did most of my money go in May?",
+    ],
+    examples: [
+      {
+        question: "What's my largest spending category this month?",
+        answerLead: "Housing at",
+        answerHighlight: "$1,920",
+        answerTail: ", then groceries at $348.",
+      },
+      {
+        question: "Am I ahead or behind this month?",
+        answerLead: "Ahead by",
+        answerHighlight: "$2,140",
+        answerTail: " — income covers spending with room left over.",
+      },
+      {
+        question: "Where did most of my money go in May?",
+        answerLead: "Housing took",
+        answerHighlight: "38%",
+        answerTail: " of outflows, followed by groceries at 19%.",
+      },
+    ],
+  },
   preFooter: {
     headline: "Grow your wealth with clarity,",
     headlineAccent: "today.",
@@ -75,7 +93,8 @@ export const MARKETING_COPY = {
   },
   auth: {
     tagline: "Know every cent of your finances.",
-    taglineAccent: "decoded.",
+    taglineAccent: "clarified.",
+    bottomBar: `${BRAND.name} — your statements, clarified`,
   },
   metadata: {
     title: `${BRAND.name} — Know every cent of your finances`,
@@ -84,6 +103,6 @@ export const MARKETING_COPY = {
   },
   footer: {
     tagline: "AI personal finance platform, built for how Americans actually manage money.",
-    bottomBar: `${BRAND.name} — every cent of your finances, decoded`,
+    bottomBar: `${BRAND.name} — your statements, clarified`,
   },
 } as const;

@@ -15,4 +15,11 @@ export const COLORS = {
   nearWhite: "#f4f4f4",
   tealMid: "#678F97",
   tealLight: "#9DB9BE",
+  highlightWarm: "#B8860B",
+  highlightWarmBg: "#FBF3E0",
+  chartBlue: "#3D5A80",
+  chartTan: "#C9B896",
+  tagSubscription: "#3D5A80",
+  tagSubscriptionBg: "#E8EEF5",
+  tagGoalBg: "#ECF5ED",
 } as const;

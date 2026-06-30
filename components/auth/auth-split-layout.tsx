@@ -55,9 +55,7 @@ export function AuthSplitLayout({ children }: { children: React.ReactNode }) {
         </div>
 
         <footer className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 pb-2 text-xs text-muted-foreground">
-          <span>
-            {BRAND.name} — every cent of your finances, decoded
-          </span>
+          <span>{MARKETING_COPY.auth.bottomBar}</span>
           <Link href="#" className="hover:text-foreground">
             Terms of Service
           </Link>

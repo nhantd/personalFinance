@@ -13,7 +13,7 @@ export function HeroSection() {
     <section className="relative flex min-h-[calc(100svh-4rem)] flex-col overflow-hidden monae-hero-bg">
       <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 sm:px-6">
         <div className="grid flex-1 items-center gap-10 py-10 lg:grid-cols-2 lg:gap-12 xl:gap-16">
-          <div className="flex flex-col justify-center">
+          <div className="flex flex-col justify-center animate-in fade-in slide-in-from-bottom-4 duration-700">
             <Badge
               variant="secondary"
               className="mb-6 w-fit border border-border bg-muted px-3 py-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground"
@@ -23,7 +23,7 @@ export function HeroSection() {
 
             <h1 className="font-heading text-4xl font-light tracking-tight text-foreground sm:text-5xl lg:text-[3.25rem] lg:leading-[1.12]">
               {hero.headline}{" "}
-              <span className="italic text-primary">{hero.headlineAccent}</span>
+              <span className={`italic ${brandClasses.highlight}`}>{hero.headlineAccent}</span>
             </h1>
 
             <p className="mt-6 max-w-md text-base leading-relaxed text-muted-foreground sm:text-lg">
@@ -45,8 +45,8 @@ export function HeroSection() {
             </div>
           </div>
 
-          <div className="flex items-center justify-center lg:justify-end">
-            <div className="w-full max-w-md lg:max-w-none">
+          <div className="flex items-center justify-center lg:justify-end animate-in fade-in slide-in-from-right-4 duration-700">
+            <div className="w-full max-w-md animate-float lg:max-w-none">
               <HeroMockCard />
             </div>
           </div>

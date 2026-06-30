@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 
 const BANKS = [
@@ -11,23 +13,29 @@ const BANKS = [
 
 export function BankLogosStrip() {
   return (
-    <div className="border-t border-border bg-card py-5">
+    <div className="border-t border-border bg-card py-5 animate-in fade-in duration-700">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-6 gap-y-3 px-4 sm:px-6">
         <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
           Reads statements from
         </p>
         <div className="flex flex-wrap items-center justify-center gap-6">
-          {BANKS.map(({ id, name, logo }) => (
+          {BANKS.map(({ id, name, logo }, i) => (
             <Image
               key={id}
               src={logo}
               alt={name}
               height={24}
               width={72}
-              className="h-6 w-auto opacity-60 grayscale"
+              className="h-6 w-auto opacity-60 grayscale animate-in fade-in fill-mode-both"
+              style={{ animationDelay: `${200 + i * 50}ms` }}
             />
           ))}
-          <span className="text-sm font-medium text-muted-foreground">+ more</span>
+          <span
+            className="text-sm font-medium text-muted-foreground animate-in fade-in fill-mode-both"
+            style={{ animationDelay: `${200 + BANKS.length * 50}ms` }}
+          >
+            + more
+          </span>
         </div>
       </div>
     </div>

@@ -40,6 +40,15 @@
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
   --color-success: var(--success);
+  --color-brand-dark: var(--brand-dark);
+  --color-highlight-warm: var(--highlight-warm);
+  --color-highlight-warm-bg: var(--highlight-warm-bg);
+  --color-soft: var(--soft);
+  --color-chart-blue: var(--chart-blue);
+  --color-chart-tan: var(--chart-tan);
+  --color-tag-subscription: var(--tag-subscription);
+  --color-tag-subscription-bg: var(--tag-subscription-bg);
+  --color-tag-goal-bg: var(--tag-goal-bg);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -84,6 +93,15 @@
   --sidebar-accent-foreground: #1c413b;
   --sidebar-border: #d1d1d1;
   --sidebar-ring: #00696d;
+  --brand-dark: #082321;
+  --highlight-warm: #b8860b;
+  --highlight-warm-bg: #fbf3e0;
+  --soft: #88ca9a;
+  --chart-blue: #3d5a80;
+  --chart-tan: #c9b896;
+  --tag-subscription: #3d5a80;
+  --tag-subscription-bg: #e8eef5;
+  --tag-goal-bg: #ecf5ed;
 }
 
 .dark {
@@ -156,5 +174,65 @@
   }
   .text-success {
     color: var(--success);
+  }
+  .text-highlight-warm {
+    color: var(--highlight-warm);
+  }
+  .bg-highlight-warm-bg {
+    background-color: var(--highlight-warm-bg);
+  }
+  @keyframes monae-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-4px);
+    }
+  }
+  @keyframes monae-bar-grow {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+  @keyframes monae-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .animate-float {
+    animation: monae-float 6s ease-in-out infinite;
+  }
+  .animate-bar-grow {
+    transform-origin: left;
+    animation: monae-bar-grow 0.8s ease-out forwards;
+  }
+  .animate-fade-up {
+    animation: monae-fade-up 0.5s ease-out forwards;
+  }
+  [data-reveal]:not([data-visible="true"]) {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  [data-reveal][data-visible="true"] {
+    animation: monae-fade-up 0.7s ease-out forwards;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float,
+    .animate-bar-grow,
+    .animate-fade-up,
+    [data-reveal] {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
   }
 }

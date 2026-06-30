@@ -1,19 +1,31 @@
 import { MessageSquare } from "lucide-react";
-import { brandClasses } from "@/lib/brand";
+import { MockEditorialCard } from "@/components/marketing/mocks/mock-editorial-card";
+import { MARKETING_COPY } from "@/lib/marketing/copy";
+import { MOCK_ASK_FEATURE } from "@/lib/marketing/mock-data";
+
+const ASK_META = MARKETING_COPY.featureItems.find((f) => f.id === "ask")!;
 
 export function MockChatSnippet() {
   return (
-    <div className={`${brandClasses.card} space-y-3 p-4`}>
-      <div className="rounded-lg bg-muted px-3 py-2.5 text-sm text-foreground">
-        How much did I spend on subscriptions last month?
+    <MockEditorialCard
+      title={ASK_META.title}
+      subtitle={ASK_META.subtitle}
+      index="03 / ASK"
+      variant="compact"
+    >
+      <div className="space-y-2">
+        <div className="rounded-md bg-muted px-3 py-2 text-sm text-foreground">
+          {MOCK_ASK_FEATURE.question}
+        </div>
+        <div className="flex gap-2">
+          <MessageSquare className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+          <p className="text-sm leading-snug text-muted-foreground">
+            {MOCK_ASK_FEATURE.answerLead}{" "}
+            <span className="font-semibold text-foreground">{MOCK_ASK_FEATURE.answerAmount}</span>
+            {MOCK_ASK_FEATURE.answerTail}
+          </p>
+        </div>
       </div>
-      <div className="flex gap-2">
-        <MessageSquare className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-        <p className="text-sm text-muted-foreground">
-          <span className="font-semibold text-foreground">$127.42</span> across 4 recurring
-          charges — Netflix, Spotify, iCloud, and Planet Fitness.
-        </p>
-      </div>
-    </div>
+    </MockEditorialCard>
   );
 }
