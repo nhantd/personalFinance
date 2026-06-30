@@ -42,11 +42,11 @@ export function MarketingHeader() {
           <Link href="#how-it-works" className="transition-colors hover:text-foreground">
             How it works
           </Link>
-          <Link href="#ask" className="transition-colors hover:text-foreground">
-            Ask Monae
-          </Link>
           <Link href="#privacy" className="transition-colors hover:text-foreground">
             Privacy
+          </Link>
+          <Link href="#ask" className="transition-colors hover:text-foreground">
+            Ask Monae
           </Link>
         </nav>
         <ButtonLink size="sm" href="/login" className={brandClasses.btnHeader}>
@@ -75,8 +75,8 @@ export function MarketingFooter() {
               links={[
                 { label: "Features", href: "#features" },
                 { label: "How it works", href: "#how-it-works" },
-                { label: "Ask Monae", href: "#ask" },
                 { label: "Privacy", href: "#privacy" },
+                { label: "Ask Monae", href: "#ask" },
                 { label: BRAND.ctaSecondary, href: "/login" },
               ]}
             />

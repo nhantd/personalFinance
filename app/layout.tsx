@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { DM_Sans, JetBrains_Mono, Newsreader } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
+import { COLORS } from "@/lib/colors";
 import { MARKETING_COPY } from "@/lib/marketing/copy";
 import "./globals.css";
 
@@ -24,6 +25,10 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: MARKETING_COPY.metadata.title,
   description: MARKETING_COPY.metadata.description,
+};
+
+export const viewport: Viewport = {
+  themeColor: COLORS.darkGreen,
 };
 
 export default function RootLayout({
