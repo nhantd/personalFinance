@@ -1,14 +1,13 @@
 import { createClient } from "@supabase/supabase-js";
+import { getSupabasePublicEnv, getSupabaseServiceRoleKey } from "@/lib/supabase/env";
 
 export function createAdminClient() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false,
-      },
-    }
-  );
+  const { url } = getSupabasePublicEnv();
+
+  return createClient(url, getSupabaseServiceRoleKey(), {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  });
 }
