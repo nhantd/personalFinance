@@ -117,9 +117,9 @@ export function MarketingFooter() {
             <FooterColumn
               title="Legal"
               links={[
-                { label: "Terms", href: "#" },
-                { label: "Privacy", href: "#" },
-                { label: "Security", href: "#" },
+                { label: "Terms", href: "/terms" },
+                { label: "Privacy", href: "/privacy" },
+                { label: "Security", href: "/security" },
               ]}
             />
             <FooterColumn

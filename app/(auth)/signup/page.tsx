@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Suspense } from "react";
 import { AuthSplitLayout } from "@/components/auth/auth-split-layout";
 import { AuthForm } from "@/components/auth/auth-form";
@@ -12,7 +13,11 @@ export default function SignupPage() {
         <AuthForm mode="signup" />
       </Suspense>
       <p className={`${brandClasses.authLegal} mt-8`}>
-        By continuing you agree to {BRAND.name}&apos;s terms of service.
+        By continuing you agree to {BRAND.name}&apos;s{" "}
+        <Link href="/terms" className="underline hover:text-foreground">
+          terms of service
+        </Link>
+        .
       </p>
     </AuthSplitLayout>
   );
