@@ -42,7 +42,7 @@ export function HeroSection() {
           </div>
 
           <div className="flex items-center justify-center lg:justify-end animate-in fade-in slide-in-from-right-4 duration-700">
-            <div className="w-full max-w-md animate-float lg:max-w-none">
+            <div className="w-full max-w-sm animate-float sm:max-w-md lg:max-w-md xl:max-w-lg">
               <HeroMockCard />
             </div>
           </div>
