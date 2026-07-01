@@ -20,7 +20,10 @@ function FooterColumn({
       <ul className="mt-4 space-y-2.5 text-sm text-foreground">
         {links.map((link) => (
           <li key={link.label}>
-            <Link href={link.href} className="transition-colors hover:text-accent">
+            <Link
+              href={link.href}
+              className="transition-colors hover:text-accent"
+            >
               {link.label}
             </Link>
           </li>
@@ -36,13 +39,22 @@ export function MarketingHeader() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Logo />
         <nav className="hidden items-center gap-8 text-sm font-medium text-muted-foreground md:flex">
-          <Link href="#features" className="transition-colors hover:text-foreground">
+          <Link
+            href="#features"
+            className="transition-colors hover:text-foreground"
+          >
             Features
           </Link>
-          <Link href="#how-it-works" className="transition-colors hover:text-foreground">
+          <Link
+            href="#how-it-works"
+            className="transition-colors hover:text-foreground"
+          >
             How it works
           </Link>
-          <Link href="#privacy" className="transition-colors hover:text-foreground">
+          <Link
+            href="#privacy"
+            className="transition-colors hover:text-foreground"
+          >
             Privacy
           </Link>
           <Link href="#ask" className="transition-colors hover:text-foreground">
@@ -77,7 +89,7 @@ export function MarketingFooter() {
                 { label: "How it works", href: "#how-it-works" },
                 { label: "Privacy", href: "#privacy" },
                 { label: "Ask Monae", href: "#ask" },
-                { label: BRAND.ctaSecondary, href: "/login" },
+                { label: BRAND.ctaSecondary, href: "/signup" },
               ]}
             />
             <FooterColumn
@@ -98,9 +110,7 @@ export function MarketingFooter() {
             />
             <FooterColumn
               title="Connect"
-              links={[
-                { label: BRAND.email, href: `mailto:${BRAND.email}` },
-              ]}
+              links={[{ label: BRAND.email, href: `mailto:${BRAND.email}` }]}
             />
           </div>
         </div>

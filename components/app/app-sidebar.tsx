@@ -18,7 +18,7 @@ export function AppSidebar({ className }: { className?: string }) {
         className
       )}
     >
-      <div className="border-b border-sidebar-border px-4 py-4">
+      <div className="px-4 py-4">
         <Logo href="/dashboard" />
       </div>
 
@@ -37,7 +37,7 @@ export function AppSidebar({ className }: { className?: string }) {
         ))}
       </nav>
 
-      <div className="space-y-0.5 border-t border-sidebar-border px-3 py-4">
+      <div className="space-y-0.5 px-3 py-4">
         <NavLink item={SETTINGS_ITEM} />
         <Button
           variant="ghost"

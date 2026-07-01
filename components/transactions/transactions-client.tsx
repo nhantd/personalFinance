@@ -1,11 +1,13 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { Upload } from "lucide-react";
 import { TransactionFilters, getPeriodIndexFromParams } from "@/components/transactions/transaction-filters";
 import { TransactionFormDialog } from "@/components/transactions/transaction-form-dialog";
 import { TransactionsTable } from "@/components/transactions/transactions-table";
 import { TransactionsContentSkeleton } from "@/components/skeletons/page-skeletons";
 import { useFilterNavigation } from "@/hooks/use-filter-navigation";
+import { ButtonLink } from "@/components/ui/button-link";
 import {
   filterTransactionsByAccount,
   filterTransactionsByCategory,
@@ -33,8 +35,8 @@ export function TransactionsClient({
   const fromParam = searchParams.get("from") ?? "";
   const toParam = searchParams.get("to") ?? "";
   const accountParam = searchParams.get("account") ?? "all";
-  const period = resolvePeriodFromParams(searchParams, 0);
-  const periodIndex = getPeriodIndexFromParams(searchParams, 0);
+  const period = resolvePeriodFromParams(searchParams);
+  const periodIndex = getPeriodIndexFromParams(searchParams);
 
   const from = fromParam || (period.label !== "Custom" ? period.start : "");
   const to = toParam || (period.label !== "Custom" ? period.end : "");
@@ -68,7 +70,14 @@ export function TransactionsClient({
             All parsed transactions. Edit inline or add manual entries.
           </p>
         </div>
-        <TransactionFormDialog accounts={accounts} />
+        <div className="flex flex-wrap items-center gap-2">
+          <ButtonLink href="/upload" variant="outline" size="sm" className="h-8">
+            <Upload className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline">Upload statement</span>
+            <span className="sm:hidden">Upload</span>
+          </ButtonLink>
+          <TransactionFormDialog accounts={accounts} />
+        </div>
       </div>
 
       <TransactionFilters

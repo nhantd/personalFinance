@@ -41,7 +41,7 @@ function UploadForm({ accounts, defaultCurrency }: UploadFormProps) {
   const [accountName, setAccountName] = useState("Primary Account");
   const [institution, setInstitution] = useState("");
   const [currency, setCurrency] = useState<Currency>(
-    accounts[0]?.currency ?? defaultCurrency
+    accounts[0]?.currency ?? defaultCurrency,
   );
   const [stage, setStage] = useState<ParseStage>("idle");
   const [progress, setProgress] = useState(0);
@@ -74,7 +74,10 @@ function UploadForm({ accounts, defaultCurrency }: UploadFormProps) {
 
   const accountItems = [
     { value: "new", label: "+ New account" },
-    ...accounts.map((a) => ({ value: a.id, label: `${a.name} · ${a.currency}` })),
+    ...accounts.map((a) => ({
+      value: a.id,
+      label: `${a.name} · ${a.currency}`,
+    })),
   ];
 
   async function handleUpload() {
@@ -161,9 +164,13 @@ function UploadForm({ accounts, defaultCurrency }: UploadFormProps) {
             <p className="mt-4 text-sm font-medium">
               {file ? file.name : "Drag & drop your statement here"}
             </p>
-            <p className="mt-1 text-xs text-muted-foreground">CSV or PDF, max 10MB</p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              CSV or PDF, max 10MB
+            </p>
             <Label htmlFor="file-upload" className="mt-4 cursor-pointer">
-              <span className={buttonVariants({ variant: "outline", size: "sm" })}>
+              <span
+                className={buttonVariants({ variant: "outline", size: "sm" })}
+              >
                 Browse files
               </span>
               <Input
@@ -212,7 +219,10 @@ function UploadForm({ accounts, defaultCurrency }: UploadFormProps) {
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label>Account name</Label>
-                <Input value={accountName} onChange={(e) => setAccountName(e.target.value)} />
+                <Input
+                  value={accountName}
+                  onChange={(e) => setAccountName(e.target.value)}
+                />
               </div>
               <div className="space-y-2">
                 <Label>Institution (optional)</Label>
@@ -237,9 +247,7 @@ function UploadForm({ accounts, defaultCurrency }: UploadFormProps) {
             </div>
           )}
 
-          {error && (
-            <p className="text-sm text-destructive">{error}</p>
-          )}
+          {error && <p className="text-sm text-destructive">{error}</p>}
 
           <Button
             onClick={handleUpload}

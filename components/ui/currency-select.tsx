@@ -15,6 +15,8 @@ interface CurrencySelectProps {
   id?: string;
   disabled?: boolean;
   placeholder?: string;
+  /** Minimum width of the open list (defaults to trigger width if larger). */
+  menuMinWidth?: number;
 }
 
 interface DropdownPosition {
@@ -31,6 +33,7 @@ export function CurrencySelect({
   id,
   disabled,
   placeholder = "Select currency",
+  menuMinWidth = 320,
 }: CurrencySelectProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -61,7 +64,7 @@ export function CurrencySelect({
     setPosition({
       top: preferBelow ? rect.bottom + gap : rect.top - gap - maxHeight,
       left: rect.left,
-      width: rect.width,
+      width: Math.max(rect.width, menuMinWidth),
       maxHeight,
     });
   }
@@ -102,7 +105,7 @@ export function CurrencySelect({
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleEscape);
     };
-  }, [open]);
+  }, [open, menuMinWidth]);
 
   function select(code: string) {
     onValueChange(code);
@@ -204,7 +207,7 @@ export function CurrencySelect({
           "flex h-10 w-full items-center justify-between gap-2 rounded-lg border border-border bg-background px-3 text-sm transition-colors",
           "hover:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
           disabled && "cursor-not-allowed opacity-50",
-          open && "border-primary/40 ring-2 ring-ring/30",
+          open && "border-primary/30 ring-1 ring-primary/20",
           className
         )}
       >

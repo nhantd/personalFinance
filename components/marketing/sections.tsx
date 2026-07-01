@@ -12,11 +12,16 @@ export function HowItWorksSection() {
   const { howItWorks } = MARKETING_COPY;
 
   return (
-    <section id="how-it-works" className="border-b border-border bg-muted/40 py-20">
+    <section
+      id="how-it-works"
+      className="border-b border-border bg-muted/40 py-20"
+    >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <p className={brandClasses.label}>{howItWorks.label}</p>
         <h2 className={`mt-3 ${brandClasses.heading}`}>{howItWorks.heading}</h2>
-        <p className="mt-4 max-w-xl text-muted-foreground">{howItWorks.subline}</p>
+        <p className="mt-4 max-w-xl text-muted-foreground">
+          {howItWorks.subline}
+        </p>
         <HowItWorksPipeline />
       </div>
     </section>
@@ -31,7 +36,9 @@ export function FeaturesSection() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <p className={brandClasses.label}>{features.label}</p>
         <h2 className={`mt-3 ${brandClasses.heading}`}>{features.heading}</h2>
-        <p className="mt-4 max-w-xl text-muted-foreground">{features.subline}</p>
+        <p className="mt-4 max-w-xl text-muted-foreground">
+          {features.subline}
+        </p>
         <RevealOnScroll className="mt-14">
           <div className="rounded-xl border border-foreground/10 bg-card/50 p-4 sm:p-6">
             <div className="grid gap-4 lg:grid-cols-2">
@@ -56,10 +63,13 @@ export function PrivacySection() {
           <RevealOnScroll>
             <div>
               <p className={brandClasses.label}>Privacy</p>
-              <h2 className={`mt-3 ${brandClasses.heading}`}>Your data stays yours</h2>
+              <h2 className={`mt-3 ${brandClasses.heading}`}>
+                Your data stays yours
+              </h2>
               <p className="mt-4 leading-relaxed text-muted-foreground">
-                Your statements, your upload, your call. {BRAND.name} encrypts your data, never
-                sells it, and lets you delete everything with one click in Settings.
+                Your statements, your upload, your call. {BRAND.name} encrypts
+                your data, never sells it, and lets you delete everything with
+                one click in Settings.
               </p>
             </div>
           </RevealOnScroll>
@@ -89,8 +99,9 @@ export function AskSection() {
                 Ask anything. Answered from your numbers.
               </h2>
               <p className="mt-4 max-w-md leading-relaxed text-muted-foreground">
-                Plain-language questions over your uploaded statements — not generic advice. Every
-                answer is computed from your real transactions.
+                Plain-language questions over your uploaded statements — not
+                generic advice. Every answer is computed from your real
+                transactions.
               </p>
               <div className="mt-6 flex flex-wrap gap-2">
                 {askSection.suggestedQuestions.map((q) => (
@@ -116,7 +127,9 @@ export function AskSection() {
                     <MessageSquare className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
                     <p className="text-sm leading-relaxed text-muted-foreground">
                       {ex.answerLead}{" "}
-                      <span className="font-semibold text-foreground">{ex.answerHighlight}</span>
+                      <span className="font-semibold text-foreground">
+                        {ex.answerHighlight}
+                      </span>
                       {ex.answerTail}
                     </p>
                   </div>

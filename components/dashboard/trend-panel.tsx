@@ -19,6 +19,7 @@ import {
   formatCurrencyPlain,
   getCategoriesWithSpending,
   getMonthBucketsRolling,
+  getYtdMonthBuckets,
 } from "@/lib/finance/aggregates";
 import type { Currency, Transaction } from "@/lib/types/database";
 import { SYSTEM_CATEGORIES } from "@/lib/types/database";
@@ -26,12 +27,15 @@ import { cn } from "@/lib/utils";
 import { COLORS } from "@/lib/colors";
 import { CHART_COLORS } from "@/components/dashboard/chart-colors";
 
-const TREND_MONTHS = [
+type TrendPeriod = "ytd" | 3 | 6 | 12 | 24;
+
+const TREND_PERIODS: { value: TrendPeriod; label: string }[] = [
+  { value: "ytd", label: "YTD" },
   { value: 3, label: "3M" },
   { value: 6, label: "6M" },
   { value: 12, label: "12M" },
   { value: 24, label: "24M" },
-] as const;
+];
 
 type TrendView = "category" | "cashflow";
 
@@ -50,15 +54,29 @@ interface TrendPanelProps {
 }
 
 export function TrendPanel({ transactions, currency, rates, rateBase }: TrendPanelProps) {
-  const [months, setMonths] = useState(12);
+  const [period, setPeriod] = useState<TrendPeriod>("ytd");
   const [view, setView] = useState<TrendView>("category");
 
-  const buckets = useMemo(() => getMonthBucketsRolling(months), [months]);
-  const trendLabel = `Last ${months} months`;
+  const { buckets, trendLabel, monthCount } = useMemo(() => {
+    if (period === "ytd") {
+      const ytdBuckets = getYtdMonthBuckets();
+      return {
+        buckets: ytdBuckets,
+        trendLabel: "Year to date",
+        monthCount: ytdBuckets.length,
+      };
+    }
+    const rolling = getMonthBucketsRolling(period);
+    return {
+      buckets: rolling,
+      trendLabel: `Last ${period} months`,
+      monthCount: period,
+    };
+  }, [period]);
 
   const categoriesWithSpend = useMemo(
-    () => getCategoriesWithSpending(transactions, months, buckets).slice(0, 6),
-    [transactions, months, buckets]
+    () => getCategoriesWithSpending(transactions, monthCount, buckets).slice(0, 6),
+    [transactions, monthCount, buckets]
   );
 
   const slugs = useMemo(
@@ -71,19 +89,19 @@ export function TrendPanel({ transactions, currency, rates, rateBase }: TrendPan
       computeMultiCategoryMonthlyTrend(
         transactions,
         slugs,
-        months,
+        monthCount,
         currency,
         rates,
         rateBase,
         buckets
       ),
-    [transactions, slugs, months, currency, rates, rateBase, buckets]
+    [transactions, slugs, monthCount, currency, rates, rateBase, buckets]
   );
 
   const cashFlowData = useMemo(
     () =>
-      computeMonthlyTrend(transactions, months, currency, rates, rateBase, buckets),
-    [transactions, months, currency, rates, rateBase, buckets]
+      computeMonthlyTrend(transactions, monthCount, currency, rates, rateBase, buckets),
+    [transactions, monthCount, currency, rates, rateBase, buckets]
   );
 
   const hasCategoryData = categoryChartData.some((row) =>
@@ -99,14 +117,14 @@ export function TrendPanel({ transactions, currency, rates, rateBase }: TrendPan
         role="group"
         aria-label="Trend period"
       >
-        {TREND_MONTHS.map((option) => (
+        {TREND_PERIODS.map((option) => (
           <button
-            key={option.value}
+            key={option.label}
             type="button"
-            onClick={() => setMonths(option.value)}
+            onClick={() => setPeriod(option.value)}
             className={cn(
               pillClass,
-              months === option.value
+              period === option.value
                 ? "bg-primary text-primary-foreground shadow-sm"
                 : "text-muted-foreground hover:bg-background hover:text-foreground"
             )}

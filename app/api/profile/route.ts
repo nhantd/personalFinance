@@ -85,7 +85,7 @@ export async function PATCH(request: Request) {
 
   try {
     await ensureUserProfile(supabase, user.id, {
-      display_name: user.email?.split("@")[0] ?? null,
+      user,
       default_currency: (default_currency?.toUpperCase() ?? "USD") as Currency,
     });
   } catch (err) {

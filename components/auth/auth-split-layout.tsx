@@ -27,14 +27,20 @@ export function AuthSplitLayout({ children }: { children: React.ReactNode }) {
         <div>
           <p className="font-heading text-3xl font-light leading-snug xl:text-4xl">
             {MARKETING_COPY.auth.tagline}{" "}
-            <em className="not-italic italic">{MARKETING_COPY.auth.taglineAccent}</em>
+            <em className="not-italic italic">
+              {MARKETING_COPY.auth.taglineAccent}
+            </em>
           </p>
           <div className="mt-8 border-t border-white/15 pt-8">
             <div className="grid grid-cols-3 gap-6">
               {AUTH_STATS.map((stat) => (
                 <div key={stat.label}>
-                  <p className="text-xl font-semibold xl:text-2xl">{stat.value}</p>
-                  <p className="mt-1 text-xs uppercase tracking-wide text-white/55">{stat.label}</p>
+                  <p className="text-xl font-semibold xl:text-2xl">
+                    {stat.value}
+                  </p>
+                  <p className="mt-1 text-xs uppercase tracking-wide text-white/55">
+                    {stat.label}
+                  </p>
                 </div>
               ))}
             </div>

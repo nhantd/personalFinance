@@ -9,7 +9,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { filterControlClass } from "@/components/ui/editorial-card";
-import { getPeriodFilters, type PeriodFilter } from "@/lib/finance/aggregates";
+import {
+  getPeriodFilters,
+  DEFAULT_PERIOD_PRESET_INDEX,
+  type PeriodFilter,
+} from "@/lib/finance/aggregates";
 import { SYSTEM_CATEGORIES, type Account } from "@/lib/types/database";
 import { cn } from "@/lib/utils";
 
@@ -183,7 +187,7 @@ export function FinanceFilters({
                     to: null,
                     category: null,
                     account: null,
-                    period: "0",
+                    period: String(DEFAULT_PERIOD_PRESET_INDEX),
                   })
                 }
                 className="font-medium text-accent hover:underline"
@@ -200,7 +204,7 @@ export function FinanceFilters({
 
 export function getPeriodIndexFromParams(
   searchParams: { get: (key: string) => string | null },
-  defaultIndex = 0
+  defaultIndex = DEFAULT_PERIOD_PRESET_INDEX
 ): number | null {
   if (searchParams.get("from") || searchParams.get("to")) return null;
   const periods = getPeriodFilters();

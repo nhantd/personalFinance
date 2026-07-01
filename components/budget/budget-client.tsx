@@ -37,8 +37,8 @@ export function BudgetClient({
   const searchParams = useSearchParams();
   const { updateParams, isPending } = useFilterNavigation("/budget");
 
-  const period = resolvePeriodFromParams(searchParams, 0);
-  const periodIndex = getPeriodIndexFromParams(searchParams, 0);
+  const period = resolvePeriodFromParams(searchParams);
+  const periodIndex = getPeriodIndexFromParams(searchParams);
   const fromParam = searchParams.get("from") ?? "";
   const toParam = searchParams.get("to") ?? "";
   const from = fromParam || period.start;

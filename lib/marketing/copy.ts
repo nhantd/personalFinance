@@ -12,17 +12,20 @@ export const MARKETING_COPY = {
   features: {
     label: "Features",
     heading: "See your money clearly",
-    subline: "Dashboards and charts built from your statements — not generic budgeting templates.",
+    subline:
+      "Dashboards and charts built from your statements — not generic budgeting templates.",
   },
   howItWorks: {
     label: "How it works",
     heading: "From upload to answers in three steps",
-    subline: "Download a statement from your bank, upload it, and ask questions in plain English.",
+    subline:
+      "Download a statement from your bank, upload it, and ask questions in plain English.",
     steps: [
       {
         index: "01",
         title: "Upload",
-        description: "Drop a CSV or PDF from any bank — credentials stay with your bank.",
+        description:
+          "Drop a CSV or PDF from any bank — credentials stay with your bank.",
       },
       {
         index: "02",
@@ -102,7 +105,8 @@ export const MARKETING_COPY = {
       "Upload bank statements, get categorized spending insights, surplus tracking, and plain-English answers — no bank login ever.",
   },
   footer: {
-    tagline: "AI personal finance platform, built for how Americans actually manage money.",
+    tagline:
+      "AI personal finance platform, built for how Americans actually manage money.",
     bottomBar: `${BRAND.name} — your statements, clarified`,
   },
 } as const;

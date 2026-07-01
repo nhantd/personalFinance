@@ -10,6 +10,7 @@ import { createClient } from "@/lib/supabase/client";
 import {
   SIGNUP_REDIRECT_PATH,
   sanitizeReturnPath,
+  buildOAuthCallbackUrl,
 } from "@/lib/auth-redirect";
 import { brandClasses } from "@/lib/brand";
 
@@ -33,7 +34,7 @@ export function AuthForm({ mode }: AuthFormProps) {
 
     const supabase = createClient();
     const destination = mode === "signup" ? SIGNUP_REDIRECT_PATH : next;
-    const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(destination)}`;
+    const redirectTo = buildOAuthCallbackUrl(destination);
 
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider: "google",
@@ -70,7 +71,9 @@ export function AuthForm({ mode }: AuthFormProps) {
         router.push(SIGNUP_REDIRECT_PATH);
         router.refresh();
       } else {
-        setError("Account created but no session. Check Supabase email confirmation settings.");
+        setError(
+          "Account created but no session. Check Supabase email confirmation settings.",
+        );
       }
     } else {
       const { error: signInError } = await supabase.auth.signInWithPassword({
@@ -143,7 +146,9 @@ export function AuthForm({ mode }: AuthFormProps) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"
-            autoComplete={mode === "signup" ? "new-password" : "current-password"}
+            autoComplete={
+              mode === "signup" ? "new-password" : "current-password"
+            }
             className="h-11 bg-card"
           />
         </div>
@@ -155,7 +160,11 @@ export function AuthForm({ mode }: AuthFormProps) {
           className={`h-11 w-full ${brandClasses.btnPrimary}`}
           disabled={loading}
         >
-          {loading ? "Please wait…" : mode === "signup" ? "Create account" : "Log in"}
+          {loading
+            ? "Please wait…"
+            : mode === "signup"
+              ? "Create account"
+              : "Log in"}
         </Button>
       </form>
 
@@ -163,14 +172,20 @@ export function AuthForm({ mode }: AuthFormProps) {
         {mode === "signup" ? (
           <>
             Already have an account?{" "}
-            <Link href={`/login?next=${encodeURIComponent(next)}`} className={brandClasses.link}>
+            <Link
+              href={`/login?next=${encodeURIComponent(next)}`}
+              className={brandClasses.link}
+            >
               Log in
             </Link>
           </>
         ) : (
           <>
             Don&apos;t have an account?{" "}
-            <Link href={`/signup?next=${encodeURIComponent(next)}`} className={brandClasses.link}>
+            <Link
+              href={`/signup?next=${encodeURIComponent(next)}`}
+              className={brandClasses.link}
+            >
               Sign up
             </Link>
           </>

@@ -1,5 +1,31 @@
-import type { SupabaseClient } from "@supabase/supabase-js";
+import type { SupabaseClient, User } from "@supabase/supabase-js";
 import type { Currency, Profile } from "@/lib/types/database";
+
+type AuthUserLike = Pick<User, "email" | "user_metadata">;
+
+/** Name from OAuth (Google sends full_name) or email local-part fallback. */
+export function getDisplayNameFromUser(user: AuthUserLike): string | null {
+  const meta = user.user_metadata ?? {};
+  for (const key of ["full_name", "name", "display_name"] as const) {
+    const value = meta[key];
+    if (typeof value === "string" && value.trim()) {
+      return value.trim();
+    }
+  }
+  const local = user.email?.split("@")[0]?.trim();
+  return local || null;
+}
+
+/** True when the stored name is empty or still the auto email prefix. */
+export function isPlaceholderDisplayName(
+  displayName: string | null | undefined,
+  email: string | null | undefined
+): boolean {
+  if (!displayName?.trim()) return true;
+  if (!email) return false;
+  const local = email.split("@")[0];
+  return displayName === email || displayName === local;
+}
 
 export async function getUserProfile(
   supabase: SupabaseClient,
@@ -26,17 +52,38 @@ export function getBaseCurrency(profile: Profile | null): Currency {
 export async function ensureUserProfile(
   supabase: SupabaseClient,
   userId: string,
-  defaults?: { display_name?: string | null; default_currency?: Currency }
+  options?: { user?: AuthUserLike; default_currency?: Currency }
 ): Promise<Profile> {
+  const authName = options?.user ? getDisplayNameFromUser(options.user) : null;
   const existing = await getUserProfile(supabase, userId);
-  if (existing) return existing;
+
+  if (existing) {
+    if (
+      options?.user &&
+      authName &&
+      !isPlaceholderDisplayName(authName, options.user.email ?? null) &&
+      isPlaceholderDisplayName(existing.display_name, options.user.email ?? null)
+    ) {
+      const { data, error } = await supabase
+        .from("profiles")
+        .update({ display_name: authName })
+        .eq("id", userId)
+        .select("*")
+        .maybeSingle();
+
+      if (!error && data) {
+        return data as Profile;
+      }
+    }
+    return existing;
+  }
 
   const { data, error } = await supabase
     .from("profiles")
     .insert({
       id: userId,
-      display_name: defaults?.display_name ?? null,
-      default_currency: defaults?.default_currency ?? "USD",
+      display_name: authName,
+      default_currency: options?.default_currency ?? "USD",
     })
     .select("*")
     .single();

@@ -14,7 +14,6 @@ import {
   filterTransactionsByPeriod,
   resolvePeriodFromParams,
 } from "@/lib/finance/aggregates";
-import { TransactionFormDialog } from "@/components/transactions/transaction-form-dialog";
 import { SpendingBodySkeleton } from "@/components/skeletons/page-skeletons";
 import { useFilterNavigation } from "@/hooks/use-filter-navigation";
 import type { Account, Currency, Transaction } from "@/lib/types/database";
@@ -42,8 +41,8 @@ export function DashboardClient({
   const searchParams = useSearchParams();
   const { updateParams, isPending } = useFilterNavigation("/dashboard");
 
-  const period = resolvePeriodFromParams(searchParams, 0);
-  const periodIndex = getPeriodIndexFromParams(searchParams, 0);
+  const period = resolvePeriodFromParams(searchParams);
+  const periodIndex = getPeriodIndexFromParams(searchParams);
   const fromParam = searchParams.get("from") ?? "";
   const toParam = searchParams.get("to") ?? "";
   const from = fromParam || period.start;
@@ -136,14 +135,11 @@ export function DashboardClient({
             )}
           </p>
         </div>
-        {transactions.length === 0 ? (
-          <ButtonLink href="/upload" variant="outline" className="px-4">
-            <Upload className="mr-2 h-4 w-4" />
-            Upload
-          </ButtonLink>
-        ) : (
-          <TransactionFormDialog accounts={accounts} />
-        )}
+        <ButtonLink href="/upload" variant="outline" size="sm" className="h-8 shrink-0">
+          <Upload className="h-3.5 w-3.5" />
+          <span className="hidden sm:inline">Upload statement</span>
+          <span className="sm:hidden">Upload</span>
+        </ButtonLink>
       </div>
 
       {transactions.length > 0 && (
@@ -168,7 +164,6 @@ export function DashboardClient({
             <ButtonLink href="/upload" className={brandClasses.btnPrimary}>
               Upload statement
             </ButtonLink>
-            <TransactionFormDialog accounts={accounts} triggerVariant="outline" />
           </div>
         </div>
       ) : isPending ? (

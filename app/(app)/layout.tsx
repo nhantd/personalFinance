@@ -23,9 +23,7 @@ export default async function AppLayout({
     redirect("/login");
   }
 
-  await ensureUserProfile(supabase, user.id, {
-    display_name: user.email?.split("@")[0] ?? null,
-  });
+  await ensureUserProfile(supabase, user.id, { user });
 
   return (
     <AskMonaeProvider>

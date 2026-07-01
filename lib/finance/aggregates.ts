@@ -74,6 +74,22 @@ export function getMonthBucketsRolling(months: number): MonthBucket[] {
   return buckets;
 }
 
+export function getMonthBucketsFromRange(start: string, end: string): MonthBucket[] {
+  const rangeStart = new Date(`${start}T00:00:00`);
+  const rangeEnd = new Date(`${end}T00:00:00`);
+  const buckets: MonthBucket[] = [];
+
+  let cursor = new Date(rangeStart.getFullYear(), rangeStart.getMonth(), 1);
+  const lastMonth = new Date(rangeEnd.getFullYear(), rangeEnd.getMonth(), 1);
+
+  while (cursor <= lastMonth) {
+    buckets.push(monthBucketFromDate(cursor));
+    cursor = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1);
+  }
+
+  return buckets.length > 0 ? buckets : [monthBucketFromDate(rangeStart)];
+}
+
 function monthBucketFromDate(d: Date): MonthBucket {
   const year = d.getFullYear();
   const month = d.getMonth();
@@ -120,9 +136,17 @@ export function getPeriodFilters(): PeriodFilter[] {
   ];
 }
 
+/** Index of "YTD" in getPeriodFilters() — app-wide default period. */
+export const DEFAULT_PERIOD_PRESET_INDEX = 2;
+
+export function getYtdMonthBuckets(): MonthBucket[] {
+  const ytd = getPeriodFilters()[DEFAULT_PERIOD_PRESET_INDEX];
+  return getMonthBucketsFromRange(ytd.start, ytd.end);
+}
+
 export function resolvePeriodFromParams(
   searchParams: { get: (key: string) => string | null },
-  defaultPresetIndex = 0
+  defaultPresetIndex = DEFAULT_PERIOD_PRESET_INDEX
 ): PeriodFilter {
   const from = searchParams.get("from");
   const to = searchParams.get("to");
