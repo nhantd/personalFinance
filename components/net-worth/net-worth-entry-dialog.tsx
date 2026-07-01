@@ -4,6 +4,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -98,12 +99,11 @@ function DateCurrencyFields({
   return (
     <div className="grid grid-cols-2 gap-x-4 gap-y-3">
       <FormField label="As-of date" htmlFor={dateId}>
-        <Input
+        <DatePicker
           id={dateId}
-          type="date"
           required
           value={asOfDate}
-          onChange={(e) => onAsOfDateChange(e.target.value)}
+          onChange={onAsOfDateChange}
           className={controlClass}
         />
       </FormField>

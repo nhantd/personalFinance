@@ -236,3 +236,28 @@
     }
   }
 }
+
+/* react-day-picker — Monae theme */
+.rdp-root {
+  --rdp-accent-color: var(--primary);
+  --rdp-accent-background-color: var(--tag-goal-bg);
+  --rdp-day-height: 2.25rem;
+  --rdp-day-width: 2.25rem;
+  --rdp-day_button-border-radius: 0.375rem;
+  font-size: 0.875rem;
+}
+
+.rdp-root .rdp-day_button:hover:not([disabled]):not(.rdp-day_selected) {
+  background-color: var(--tag-goal-bg);
+  color: var(--primary);
+}
+
+.rdp-root .rdp-day_selected .rdp-day_button {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.rdp-root .rdp-day_today:not(.rdp-day_selected) .rdp-day_button {
+  background-color: var(--muted);
+  color: var(--foreground);
+}

@@ -19,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -113,13 +114,12 @@ export function TransactionsTable({
             transactions.map((tx) => (
               <TableRow key={tx.id}>
                 <TableCell>
-                  <Input
-                    type="date"
-                    defaultValue={tx.date}
+                  <DatePicker
+                    value={tx.date}
                     className={cn(filterControlClass, "h-9 font-mono text-xs")}
-                    onBlur={(e) => {
-                      if (e.target.value && e.target.value !== tx.date) {
-                        patchTransaction(tx.id, { date: e.target.value });
+                    onChange={(next) => {
+                      if (next && next !== tx.date) {
+                        patchTransaction(tx.id, { date: next });
                       }
                     }}
                   />

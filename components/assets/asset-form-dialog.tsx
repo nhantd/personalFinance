@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -171,12 +172,11 @@ export function AssetFormDialog({ kind, asset, trigger, onSaved }: AssetFormDial
           )}
           <div className="space-y-2">
             <Label htmlFor="asset-date">As of date</Label>
-            <Input
+            <DatePicker
               id="asset-date"
-              type="date"
               required
               value={asOfDate}
-              onChange={(e) => setAsOfDate(e.target.value)}
+              onChange={setAsOfDate}
             />
           </div>
           <div className="space-y-2">

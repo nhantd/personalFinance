@@ -1,6 +1,6 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
+import { DatePicker } from "@/components/ui/date-picker";
 import {
   Select,
   SelectContent,
@@ -103,14 +103,13 @@ export function FinanceFilters({
         </div>
 
         <div className="flex min-w-0 flex-1 items-center gap-2 lg:justify-end">
-          <Input
+          <DatePicker
             id="filter-from"
-            type="date"
             value={from}
             aria-label="From date"
-            onChange={(e) =>
+            onChange={(next) =>
               onUpdate({
-                from: e.target.value || null,
+                from: next || null,
                 to: to || null,
                 period: null,
               })
@@ -118,15 +117,14 @@ export function FinanceFilters({
             className={cn(controlClass, "w-full min-w-0 sm:w-[9.5rem]")}
           />
           <span className="hidden shrink-0 text-xs text-muted-foreground sm:inline">–</span>
-          <Input
+          <DatePicker
             id="filter-to"
-            type="date"
             value={to}
             aria-label="To date"
-            onChange={(e) =>
+            onChange={(next) =>
               onUpdate({
                 from: from || null,
-                to: e.target.value || null,
+                to: next || null,
                 period: null,
               })
             }

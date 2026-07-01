@@ -12,6 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -148,12 +149,11 @@ export function TransactionFormDialog({
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="tx-date">Date</Label>
-              <Input
+              <DatePicker
                 id="tx-date"
-                type="date"
                 required
                 value={date}
-                onChange={(e) => setDate(e.target.value)}
+                onChange={setDate}
                 className={filterControlClass}
               />
             </div>
