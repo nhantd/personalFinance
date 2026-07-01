@@ -62,6 +62,11 @@ export function PreFooterCta() {
                     >
                       {stat.value}
                     </p>
+                    {"sublabel" in stat && stat.sublabel && (
+                      <p className="mt-0.5 text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                        {stat.sublabel}
+                      </p>
+                    )}
                   </div>
                 ))}
               </div>

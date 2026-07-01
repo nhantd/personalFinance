@@ -28,7 +28,7 @@ export const brandClasses = {
   creepRow: "bg-highlight-warm-bg",
   mockCard: "rounded-lg border border-foreground/15 bg-card",
   mockCardHeader: "flex items-center justify-between border-b border-foreground/10 px-4 py-2.5",
-  mockSerifStat: "font-heading text-2xl font-light tracking-tight",
+  mockSerifStat: "font-sans text-2xl font-semibold tabular-nums tracking-normal",
   mockInsightChip:
     "inline-flex items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/8 px-3 py-1.5 text-xs font-medium text-foreground",
   tagSubscription: "bg-tag-subscription-bg text-tag-subscription",

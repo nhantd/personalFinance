@@ -10,7 +10,7 @@ export function MockChatSnippet() {
     <MockEditorialCard
       title={ASK_META.title}
       subtitle={ASK_META.subtitle}
-      index="03 / ASK"
+      index="04 / ASK"
       variant="compact"
     >
       <div className="space-y-2">

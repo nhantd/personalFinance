@@ -6,7 +6,7 @@ import { BRAND } from "@/lib/brand";
 
 const AUTH_STATS = [
   { value: "Any bank", label: "CSV & PDF supported" },
-  { value: "0", label: "Bank logins held" },
+  { value: "0", label: "Bank credentials held" },
   { value: "$67.96m", label: "Tracked — live" },
 ] as const;
 
@@ -46,7 +46,7 @@ export function AuthSplitLayout({ children }: { children: React.ReactNode }) {
             </div>
           </div>
           <p className="mt-8 text-xs font-semibold uppercase tracking-widest text-white/75">
-            No bank login · ever
+            {MARKETING_COPY.auth.credentialBadge}
           </p>
         </div>
       </aside>

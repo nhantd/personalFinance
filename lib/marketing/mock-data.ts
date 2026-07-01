@@ -108,3 +108,38 @@ export const MOCK_ASK_STEP = {
 } as const;
 
 export const MOCK_STEP_TRANSACTIONS = MOCK_TRANSACTIONS.slice(0, 3);
+
+export const MOCK_NET_WORTH = {
+  total: "$142,400",
+  change: "+4.2%",
+  changeLabel: "vs last month",
+  assets: "$181,000",
+  liabilities: "$38,600",
+} as const;
+
+export const MOCK_WEALTH_BREAKDOWN = {
+  investments: { value: "$68,200", detail: "3 holdings" },
+  property: { value: "$38,000", detail: "$210k · $172k mortgage" },
+  other: { value: "$74,800", detail: "Savings & other" },
+  liabilities: { value: "$38,600", detail: "4 accounts" },
+} as const;
+
+export const MOCK_NET_WORTH_HISTORY = [
+  { label: "Aug", netWorth: 128000, assets: 158000 },
+  { label: "Sep", netWorth: 131200, assets: 162000 },
+  { label: "Oct", netWorth: 133800, assets: 165000 },
+  { label: "Nov", netWorth: 136500, assets: 168000 },
+  { label: "Dec", netWorth: 138200, assets: 172000 },
+  { label: "Jan", netWorth: 139800, assets: 175000 },
+  { label: "Feb", netWorth: 140500, assets: 177000 },
+  { label: "Mar", netWorth: 141200, assets: 179000 },
+  { label: "Apr", netWorth: 141800, assets: 180000 },
+  { label: "May", netWorth: 142400, assets: 181000 },
+] as const;
+
+export const MOCK_HERO_WEALTH = {
+  netWorth: "$142k",
+  liabilities: "$38.6k",
+  cashSurplus: "+$2,140",
+  month: "May",
+} as const;

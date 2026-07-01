@@ -2,6 +2,7 @@ import { MessageSquare } from "lucide-react";
 import { HowItWorksPipeline } from "@/components/marketing/how-it-works-pipeline";
 import { MockChatSnippet } from "@/components/marketing/mocks/mock-chat-snippet";
 import { MockDashboardChart } from "@/components/marketing/mocks/mock-dashboard-chart";
+import { MockNetWorthFeature } from "@/components/marketing/mocks/mock-net-worth-feature";
 import { MockPrivacyBadge } from "@/components/marketing/mocks/mock-privacy-badge";
 import { MockSummaryCards } from "@/components/marketing/mocks/mock-summary-cards";
 import { RevealOnScroll } from "@/components/marketing/reveal-on-scroll";
@@ -32,10 +33,12 @@ export function FeaturesSection() {
   const { features } = MARKETING_COPY;
 
   return (
-    <section id="features" className="border-b border-border py-20">
+    <section id="features" aria-labelledby="features-heading" className="border-b border-border py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <p className={brandClasses.label}>{features.label}</p>
-        <h2 className={`mt-3 ${brandClasses.heading}`}>{features.heading}</h2>
+        <h2 id="features-heading" className={`mt-3 ${brandClasses.heading}`}>
+          {features.heading}
+        </h2>
         <p className="mt-4 max-w-xl text-muted-foreground">
           {features.subline}
         </p>
@@ -43,10 +46,13 @@ export function FeaturesSection() {
           <div className="rounded-xl border border-foreground/10 bg-card/50 p-4 sm:p-6">
             <div className="grid gap-4 lg:grid-cols-2">
               <div className="lg:col-span-2">
-                <MockDashboardChart />
+                <MockNetWorthFeature />
               </div>
+              <MockDashboardChart />
               <MockSummaryCards />
-              <MockChatSnippet />
+              <div className="lg:col-span-2">
+                <MockChatSnippet />
+              </div>
             </div>
           </div>
         </RevealOnScroll>
@@ -56,14 +62,16 @@ export function FeaturesSection() {
 }
 
 export function PrivacySection() {
+  const { privacy } = MARKETING_COPY;
+
   return (
-    <section id="privacy" className="border-b border-border bg-muted/40 py-20">
+    <section id="privacy" aria-labelledby="privacy-heading" className="border-b border-border bg-muted/40 py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <RevealOnScroll>
             <div>
               <p className={brandClasses.label}>Privacy</p>
-              <h2 className={`mt-3 ${brandClasses.heading}`}>
+              <h2 id="privacy-heading" className={`mt-3 ${brandClasses.heading}`}>
                 Your data stays yours
               </h2>
               <p className="mt-4 leading-relaxed text-muted-foreground">
@@ -78,7 +86,7 @@ export function PrivacySection() {
           </RevealOnScroll>
         </div>
         <p className="mt-12 text-center text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-          No connection · No API · No screen-scraping · Ever
+          {privacy.tagline}
         </p>
       </div>
     </section>
@@ -89,13 +97,13 @@ export function AskSection() {
   const { askSection } = MARKETING_COPY;
 
   return (
-    <section id="ask" className="border-b border-border py-20">
+    <section id="ask" aria-labelledby="ask-heading" className="border-b border-border py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <RevealOnScroll>
             <div>
               <p className={brandClasses.label}>Ask Monae</p>
-              <h2 className={`mt-3 ${brandClasses.heading}`}>
+              <h2 id="ask-heading" className={`mt-3 ${brandClasses.heading}`}>
                 Ask anything. Answered from your numbers.
               </h2>
               <p className="mt-4 max-w-md leading-relaxed text-muted-foreground">

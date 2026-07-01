@@ -42,7 +42,7 @@ export function MockSummaryCards() {
       <MockEditorialCard
         title={BUDGET_META.title}
         subtitle={BUDGET_META.subtitle}
-        index="02 / BUDGET"
+        index="03 / BUDGET"
         variant="compact"
         className="pb-0"
       >

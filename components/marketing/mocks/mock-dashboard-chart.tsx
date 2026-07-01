@@ -68,7 +68,7 @@ export function MockDashboardChart() {
       <MockEditorialCard
         title={SPENDING_META.title}
         subtitle={SPENDING_META.subtitle}
-        index="01 / SPENDING"
+        index="02 / SPENDING"
         variant="compact"
       >
         <div className="grid grid-cols-[1fr_auto_1fr] gap-2">

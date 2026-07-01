@@ -38,7 +38,13 @@ export function MarketingHeader() {
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-lg">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Logo />
-        <nav className="hidden items-center gap-8 text-sm font-medium text-muted-foreground md:flex">
+        <nav className="hidden items-center gap-6 text-sm font-medium text-muted-foreground md:flex lg:gap-8">
+          <Link
+            href="#wealth"
+            className="transition-colors hover:text-foreground"
+          >
+            Wealth
+          </Link>
           <Link
             href="#features"
             className="transition-colors hover:text-foreground"
@@ -52,13 +58,19 @@ export function MarketingHeader() {
             How it works
           </Link>
           <Link
+            href="#compare"
+            className="transition-colors hover:text-foreground"
+          >
+            Compare
+          </Link>
+          <Link
             href="#privacy"
             className="transition-colors hover:text-foreground"
           >
             Privacy
           </Link>
-          <Link href="#ask" className="transition-colors hover:text-foreground">
-            Ask Monae
+          <Link href="#faq" className="transition-colors hover:text-foreground">
+            FAQ
           </Link>
         </nav>
         <ButtonLink size="sm" href="/login" className={brandClasses.btnHeader}>
@@ -85,10 +97,12 @@ export function MarketingFooter() {
             <FooterColumn
               title="Product"
               links={[
+                { label: "Wealth", href: "#wealth" },
                 { label: "Features", href: "#features" },
                 { label: "How it works", href: "#how-it-works" },
+                { label: "Compare", href: "#compare" },
                 { label: "Privacy", href: "#privacy" },
-                { label: "Ask Monae", href: "#ask" },
+                { label: "FAQ", href: "#faq" },
                 { label: BRAND.ctaSecondary, href: "/signup" },
               ]}
             />

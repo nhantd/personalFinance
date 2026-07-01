@@ -1,5 +1,5 @@
 import { BRAND, brandClasses } from "@/lib/brand";
-import { MOCK_INSIGHT, MOCK_READ, MOCK_STATEMENT } from "@/lib/marketing/mock-data";
+import { MOCK_HERO_WEALTH, MOCK_INSIGHT, MOCK_READ, MOCK_STATEMENT } from "@/lib/marketing/mock-data";
 import { MockTransactionList } from "@/components/marketing/mocks/mock-transaction-list";
 import { cn } from "@/lib/utils";
 
@@ -26,16 +26,20 @@ export function HeroMockCard() {
           className={`mt-3 rounded-md px-3 py-2 font-sans text-sm leading-relaxed text-foreground ${brandClasses.insightBg} opacity-0 animate-fade-up`}
           style={{ animationDelay: "600ms" }}
         >
-          You&apos;re cash-flow positive by{" "}
+          Net worth{" "}
+          <span className="font-heading font-medium text-accent">{MOCK_HERO_WEALTH.netWorth}</span>
+          {" · "}
+          Liabilities{" "}
+          <span className="font-semibold text-foreground">{MOCK_HERO_WEALTH.liabilities}</span>
+          {" · "}
+          Cash surplus{" "}
           <span className={`font-heading font-medium ${brandClasses.income}`}>
-            {MOCK_READ.cashFlowPositive}
+            {MOCK_HERO_WEALTH.cashSurplus}
           </span>{" "}
-          in {MOCK_READ.month}.{" "}
+          in {MOCK_HERO_WEALTH.month}.{" "}
           <span className="font-semibold text-foreground">{MOCK_READ.categoryUp}</span> is up{" "}
           <span className="font-semibold text-highlight-warm">{MOCK_READ.categoryChangePct}</span> vs{" "}
-          {MOCK_READ.compareMonth}.{" "}
-          <span className="font-semibold text-accent">{MOCK_READ.goalName}</span> is{" "}
-          <span className="font-semibold text-accent">{MOCK_READ.goalPct}</span> of your target.
+          {MOCK_READ.compareMonth}.
         </p>
         <div className="mt-4 grid grid-cols-3 gap-3">
           {[

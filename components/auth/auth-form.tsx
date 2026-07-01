@@ -99,7 +99,7 @@ export function AuthForm({ mode }: AuthFormProps) {
       </h1>
       <p className={brandClasses.authSubheading}>
         {mode === "signup"
-          ? "No bank login. Upload a statement and see insights in minutes."
+          ? "No bank credentials. Upload a statement and see insights in about one minute."
           : "Sign in to your account"}
       </p>
 
