@@ -1,3 +1,4 @@
+import { MarketingSiteJsonLd } from "@/components/marketing/json-ld";
 import { MarketingFooter, MarketingHeader } from "@/components/marketing/header-footer";
 
 export default function MarketingLayout({
@@ -7,6 +8,7 @@ export default function MarketingLayout({
 }) {
   return (
     <>
+      <MarketingSiteJsonLd />
       <MarketingHeader />
       {children}
       <MarketingFooter />

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { LEGAL_ENTITY } from "@/lib/legal/entity";
 import { LEGAL_NAV } from "@/lib/legal/types";
 import type { LegalDocumentMeta } from "@/lib/legal/types";
-import { brandClasses } from "@/lib/brand";
+import { BRAND, brandClasses } from "@/lib/brand";
 import { cn } from "@/lib/utils";
 
 interface LegalDocumentProps {
@@ -24,8 +24,7 @@ export function LegalDocument({ document }: LegalDocumentProps) {
       <p className={brandClasses.label}>Legal · {document.label}</p>
       <h1 className={`mt-4 ${brandClasses.heading}`}>{document.title}</h1>
       <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-        Last updated {updated} · {LEGAL_ENTITY.tradingAs} ·{" "}
-        {LEGAL_ENTITY.governingLaw}
+        Last updated {updated} · {BRAND.name} · {LEGAL_ENTITY.governingLaw}
       </p>
 
       <nav

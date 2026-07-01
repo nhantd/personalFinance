@@ -6,8 +6,11 @@ import { AppSidebar } from "@/components/app/app-sidebar";
 import { AskMonaeBubble } from "@/components/chat/ask-monae-bubble";
 import { AskMonaeProvider } from "@/components/chat/ask-monae-provider";
 import { ensureUserProfile } from "@/lib/finance/profile";
+import { NOINDEX_NOFOLLOW_METADATA } from "@/lib/seo/site";
 
 export const dynamic = "force-dynamic";
+
+export const metadata = NOINDEX_NOFOLLOW_METADATA;
 
 export default async function AppLayout({
   children,

@@ -1,15 +1,14 @@
 import type { MetadataRoute } from "next";
-
-function getAppUrl() {
-  return process.env.NEXT_PUBLIC_APP_URL ?? "https://monae.app";
-}
+import { getSiteUrl, getSitemapLastModified, ROBOTS_DISALLOW, SITEMAP_ROUTES } from "@/lib/seo/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
       allow: "/",
+      disallow: ROBOTS_DISALLOW,
     },
-    sitemap: `${getAppUrl()}/sitemap.xml`,
+    sitemap: `${getSiteUrl()}/sitemap.xml`,
+    host: getSiteUrl(),
   };
 }

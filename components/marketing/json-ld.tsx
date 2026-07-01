@@ -1,12 +1,50 @@
 import { BRAND } from "@/lib/brand";
+import { LEGAL_ENTITY } from "@/lib/legal/entity";
 import { MARKETING_COPY } from "@/lib/marketing/copy";
+import { getSiteUrl } from "@/lib/seo/site";
 
-function getAppUrl() {
-  return process.env.NEXT_PUBLIC_APP_URL ?? "https://monae.app";
+export function MarketingSiteJsonLd() {
+  const siteUrl = getSiteUrl();
+
+  const organization = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: BRAND.name,
+    legalName: LEGAL_ENTITY.legalName,
+    url: siteUrl,
+    email: LEGAL_ENTITY.email,
+    description: MARKETING_COPY.metadata.description,
+  };
+
+  const website = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: BRAND.name,
+    url: siteUrl,
+    description: MARKETING_COPY.metadata.description,
+    publisher: {
+      "@type": "Organization",
+      name: BRAND.name,
+      legalName: LEGAL_ENTITY.legalName,
+    },
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organization) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(website) }}
+      />
+    </>
+  );
 }
 
-export function MarketingJsonLd() {
-  const appUrl = getAppUrl();
+export function MarketingPageJsonLd() {
+  const siteUrl = getSiteUrl();
   const { metadata, faq } = MARKETING_COPY;
 
   const softwareApplication = {
@@ -22,8 +60,9 @@ export function MarketingJsonLd() {
       description: "Free while in beta",
     },
     description: metadata.description,
-    url: appUrl,
+    url: siteUrl,
     featureList: [
+      "AI personal finance advisor (insights, not advice)",
       "Net worth tracking",
       "Liability tracking",
       "Investment and property tracking",

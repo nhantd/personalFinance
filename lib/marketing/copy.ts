@@ -235,10 +235,12 @@ export const MARKETING_COPY = {
     credentialBadge: "No bank credentials · ever",
   },
   metadata: {
-    title: `${BRAND.name} — Net Worth Tracker & Personal Finance App | No Bank Credentials`,
+    title: `${BRAND.name} — AI Personal Finance Advisor | No Bank Credentials`,
     description:
-      "Track net worth, liabilities, investments, and spending from bank statement uploads. No bank credentials, no Open Banking. Free while in beta. AI-powered insights.",
+      "Your AI personal finance advisor — ask about spending, net worth, and debt from uploaded bank statements. No bank credentials, no Open Banking. Free while in beta. Insights, not advice.",
     keywords: [
+      "AI personal finance advisor",
+      "AI money advisor",
       "net worth tracker",
       "personal finance app",
       "wealth tracker",
