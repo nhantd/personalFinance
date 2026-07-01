@@ -1,10 +1,19 @@
-import { streamText } from "ai";
+import { streamText, convertToModelMessages, type UIMessage } from "ai";
 import { claudeModel } from "@/lib/ai/model";
 import { createClient } from "@/lib/supabase/server";
 import { buildChatContext, CHAT_SYSTEM_PROMPT } from "@/lib/ai/chat-context";
 import type { Transaction } from "@/lib/types/database";
 
 export const maxDuration = 60;
+
+function getTextFromUIMessage(message: UIMessage | undefined): string {
+  return (
+    message?.parts
+      ?.filter((p): p is { type: "text"; text: string } => p.type === "text")
+      .map((p) => p.text)
+      .join("") ?? ""
+  );
+}
 
 export async function POST(request: Request) {
   const supabase = await createClient();
@@ -16,9 +25,12 @@ export async function POST(request: Request) {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  const { messages, sessionId } = await request.json();
+  const { messages, sessionId } = (await request.json()) as {
+    messages: UIMessage[];
+    sessionId?: string;
+  };
 
-  let activeSessionId = sessionId as string | undefined;
+  let activeSessionId = sessionId;
 
   if (!activeSessionId) {
     const { data: session } = await supabase
@@ -29,7 +41,9 @@ export async function POST(request: Request) {
     activeSessionId = session?.id;
   }
 
-  const lastUserMessage = messages[messages.length - 1]?.content as string;
+  const lastUser = messages.at(-1);
+  const lastUserMessage =
+    lastUser?.role === "user" ? getTextFromUIMessage(lastUser) : "";
 
   if (activeSessionId && lastUserMessage) {
     await supabase.from("chat_messages").insert({
@@ -59,7 +73,7 @@ export async function POST(request: Request) {
   const result = streamText({
     model: claudeModel,
     system: `${CHAT_SYSTEM_PROMPT}\n\n${context}`,
-    messages,
+    messages: await convertToModelMessages(messages),
     onFinish: async ({ text }) => {
       if (activeSessionId && text) {
         await supabase.from("chat_messages").insert({

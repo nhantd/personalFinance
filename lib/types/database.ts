@@ -1,4 +1,65 @@
-export type Currency = "GBP" | "USD" | "EUR";
+export type Currency =
+  | "USD"
+  | "GBP"
+  | "EUR"
+  | "VND"
+  | "CAD"
+  | "MXN"
+  | "BRL"
+  | "ARS"
+  | "CLP"
+  | "COP"
+  | "CHF"
+  | "SEK"
+  | "NOK"
+  | "DKK"
+  | "PLN"
+  | "CZK"
+  | "HUF"
+  | "RON"
+  | "TRY"
+  | "UAH"
+  | "RUB"
+  | "JPY"
+  | "CNY"
+  | "HKD"
+  | "SGD"
+  | "KRW"
+  | "TWD"
+  | "THB"
+  | "MYR"
+  | "IDR"
+  | "PHP"
+  | "INR"
+  | "AUD"
+  | "NZD"
+  | "PKR"
+  | "BDT"
+  | "LKR"
+  | "AED"
+  | "SAR"
+  | "ILS"
+  | "ZAR"
+  | "EGP"
+  | "NGN"
+  | "KES"
+  | (string & {});
+
+export { SUPPORTED_CURRENCIES, isSupportedCurrency, currencySelectItems } from "@/lib/currencies";
+export type { CurrencyOption } from "@/lib/currencies";
+
+export type AssetKind = "investment" | "property" | "other" | "liability";
+
+export type InvestmentSubtype = "stocks" | "savings" | "other_liquid";
+export type PropertySubtype = "house" | "other_property";
+export type OtherAssetSubtype = "vehicle" | "other";
+export type LiabilitySubtype =
+  | "credit_card"
+  | "student_loan"
+  | "personal_loan"
+  | "mortgage"
+  | "hecs"
+  | "other";
 
 export type StatementStatus = "pending" | "processing" | "complete" | "failed";
 
@@ -17,7 +78,43 @@ export interface Account {
   name: string;
   institution: string | null;
   currency: Currency;
+  current_balance: number | null;
+  balance_as_of: string | null;
   created_at: string;
+}
+
+export interface Asset {
+  id: string;
+  user_id: string;
+  kind: AssetKind;
+  subtype: string;
+  name: string;
+  currency: Currency;
+  value: number;
+  debt: number;
+  institution: string | null;
+  notes: string | null;
+  as_of_date: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AssetSnapshot {
+  id: string;
+  asset_id: string;
+  user_id: string;
+  recorded_at: string;
+  value: number;
+  debt: number;
+  currency: Currency;
+}
+
+export interface FxRate {
+  base_currency: string;
+  quote_currency: string;
+  rate: number;
+  rate_date: string;
+  fetched_at: string;
 }
 
 export interface Statement {
@@ -79,6 +176,40 @@ export interface ParsedTransaction {
   is_income: boolean;
   category?: string;
 }
+
+export const INVESTMENT_SUBTYPES: { value: InvestmentSubtype; label: string }[] = [
+  { value: "stocks", label: "Stocks & shares" },
+  { value: "savings", label: "Savings" },
+  { value: "other_liquid", label: "Other liquid" },
+];
+
+export const PROPERTY_SUBTYPES: { value: PropertySubtype; label: string }[] = [
+  { value: "house", label: "House / home" },
+  { value: "other_property", label: "Other property" },
+];
+
+export const OTHER_ASSET_SUBTYPES: { value: OtherAssetSubtype; label: string }[] = [
+  { value: "vehicle", label: "Vehicle" },
+  { value: "other", label: "Other" },
+];
+
+export const LIABILITY_SUBTYPES: { value: LiabilitySubtype; label: string }[] = [
+  { value: "credit_card", label: "Credit card" },
+  { value: "student_loan", label: "Student loan" },
+  { value: "personal_loan", label: "Personal loan" },
+  { value: "mortgage", label: "Mortgage" },
+  { value: "hecs", label: "HECS / HELP" },
+  { value: "other", label: "Other" },
+];
+
+export const NET_WORTH_ASSET_CATEGORIES: {
+  value: PropertySubtype | OtherAssetSubtype;
+  label: string;
+  kind: "property" | "other";
+}[] = [
+  ...PROPERTY_SUBTYPES.map((s) => ({ ...s, kind: "property" as const })),
+  ...OTHER_ASSET_SUBTYPES.map((s) => ({ ...s, kind: "other" as const })),
+];
 
 export const SYSTEM_CATEGORIES = [
   { slug: "income", label: "Income", icon: "wallet" },

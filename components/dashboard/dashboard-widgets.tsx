@@ -1,181 +1,92 @@
 "use client";
 
-import {
-  Bar,
-  BarChart,
-  Cell,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { EditorialCard } from "@/components/ui/editorial-card";
 import { formatCurrencyPlain, type FinancialSummary } from "@/lib/finance/aggregates";
-import type { Currency, Transaction } from "@/lib/types/database";
-import { SYSTEM_CATEGORIES } from "@/lib/types/database";
+import type { Currency } from "@/lib/types/database";
 import { cn } from "@/lib/utils";
-import { COLORS } from "@/lib/colors";
 import { brandClasses } from "@/lib/brand";
 
-const CHART_COLORS = [
-  COLORS.forest,
-  COLORS.textLink,
-  COLORS.mint,
-  COLORS.success,
-  COLORS.tealMid,
-  COLORS.text,
-  COLORS.paleGreen,
-  COLORS.tealLight,
-];
-
-interface SummaryCardsProps {
+interface PeriodHeroProps {
   summary: FinancialSummary;
+  priorSummary: FinancialSummary;
   currency: Currency;
+  periodLabel: string;
+  categoryLabel?: string;
 }
 
-export function SummaryCards({ summary, currency }: SummaryCardsProps) {
+function pctChange(current: number, prior: number): number | null {
+  if (prior === 0) return null;
+  return ((current - prior) / prior) * 100;
+}
+
+function DeltaBadge({ current, prior, invert }: { current: number; prior: number; invert?: boolean }) {
+  const change = pctChange(current, prior);
+  if (change === null || Math.abs(change) < 1) return null;
+  const isUp = change > 0;
+  const bad = invert ? isUp : !isUp;
   return (
-    <div className="grid gap-4 sm:grid-cols-3">
-      <Card className={brandClasses.card}>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-muted-foreground">Income</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className={`text-2xl font-bold ${brandClasses.income}`}>
-            {formatCurrencyPlain(summary.totalIncome, currency)}
+    <span
+      className={cn(
+        "text-[10px] font-semibold",
+        bad ? "text-destructive" : "text-success"
+      )}
+    >
+      {isUp ? "↑" : "↓"} {Math.abs(Math.round(change))}% vs prior period
+    </span>
+  );
+}
+
+export function PeriodHero({
+  summary,
+  priorSummary,
+  currency,
+  periodLabel,
+  categoryLabel,
+}: PeriodHeroProps) {
+  const subtitle = [
+    `${summary.transactionCount} transactions`,
+    categoryLabel,
+  ]
+    .filter(Boolean)
+    .join(" · ");
+
+  return (
+    <EditorialCard title={periodLabel} index="PERIOD" subtitle={subtitle}>
+      <div className="grid gap-6 sm:grid-cols-3">
+        <div>
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+            Spent
           </p>
-        </CardContent>
-      </Card>
-      <Card className={brandClasses.card}>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-muted-foreground">Outflows</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-2xl font-bold">
+          <p className={`${brandClasses.mockSerifStat} mt-1 text-foreground`}>
             {formatCurrencyPlain(summary.totalOutflows, currency)}
           </p>
-        </CardContent>
-      </Card>
-      <Card className={brandClasses.card}>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-muted-foreground">Surplus</CardTitle>
-        </CardHeader>
-        <CardContent>
+          <DeltaBadge current={summary.totalOutflows} prior={priorSummary.totalOutflows} invert />
+        </div>
+        <div>
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+            Income
+          </p>
+          <p className={`${brandClasses.mockSerifStat} mt-1 text-success`}>
+            {formatCurrencyPlain(summary.totalIncome, currency)}
+          </p>
+          <DeltaBadge current={summary.totalIncome} prior={priorSummary.totalIncome} />
+        </div>
+        <div>
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+            Surplus
+          </p>
           <p
             className={cn(
-              "text-2xl font-bold",
-              summary.surplus >= 0 ? brandClasses.income : "text-destructive"
+              brandClasses.mockSerifStat,
+              "mt-1",
+              summary.surplus >= 0 ? "text-success" : "text-destructive"
             )}
           >
             {summary.surplus >= 0 ? "+" : ""}
             {formatCurrencyPlain(summary.surplus, currency)}
           </p>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
-
-interface CategoryChartProps {
-  summary: FinancialSummary;
-  currency: Currency;
-}
-
-export function CategoryChart({ summary, currency }: CategoryChartProps) {
-  const data = summary.byCategory.slice(0, 8).map((c) => ({
-    name: SYSTEM_CATEGORIES.find((s) => s.slug === c.category)?.label ?? c.category,
-    amount: c.amount,
-    percentage: c.percentage,
-  }));
-
-  if (data.length === 0) {
-    return (
-      <Card className={brandClasses.card}>
-        <CardHeader>
-          <CardTitle>Spending by category</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground">No expense data yet.</p>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  return (
-    <Card className="border-border/60 bg-card/50">
-      <CardHeader>
-        <CardTitle>Spending by category</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="h-64">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={data} layout="vertical" margin={{ left: 20, right: 20 }}>
-              <XAxis type="number" hide />
-              <YAxis
-                type="category"
-                dataKey="name"
-                width={100}
-                tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
-              />
-              <Tooltip
-                formatter={(value) => formatCurrencyPlain(Number(value), currency)}
-                contentStyle={{
-                  background: "var(--card)",
-                  border: "1px solid var(--border)",
-                  borderRadius: "8px",
-                }}
-              />
-              <Bar dataKey="amount" radius={[0, 4, 4, 0]}>
-                {data.map((_, i) => (
-                  <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
         </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-interface RecentTransactionsProps {
-  transactions: Transaction[];
-  currency: Currency;
-}
-
-export function RecentTransactions({ transactions, currency }: RecentTransactionsProps) {
-  const recent = transactions.slice(0, 10);
-
-  return (
-    <Card className="border-border/60 bg-card/50">
-      <CardHeader>
-        <CardTitle>Recent transactions</CardTitle>
-      </CardHeader>
-      <CardContent>
-        {recent.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No transactions yet. Upload a statement to get started.</p>
-        ) : (
-          <div className="space-y-3">
-            {recent.map((tx) => (
-              <div
-                key={tx.id}
-                className="flex items-center justify-between border-b border-border/30 pb-3 last:border-0"
-              >
-                <div>
-                  <p className="text-sm font-medium">{tx.description}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {tx.date} · {SYSTEM_CATEGORIES.find((c) => c.slug === tx.category)?.label ?? tx.category}
-                  </p>
-                </div>
-                <p className={cn("text-sm font-mono", tx.is_income ? brandClasses.income : "")}>
-                  {tx.is_income ? "+" : "−"}
-                  {formatCurrencyPlain(Math.abs(Number(tx.amount)), currency)}
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
-      </CardContent>
-    </Card>
+      </div>
+    </EditorialCard>
   );
 }

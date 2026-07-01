@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import type { Account, Currency } from "@/lib/types/database";
+import { CurrencySelect } from "@/components/ui/currency-select";
 
 type ParseStage = "idle" | "uploading" | "parsing" | "complete" | "error";
 
@@ -39,7 +40,9 @@ function UploadForm({ accounts, defaultCurrency }: UploadFormProps) {
   const [accountId, setAccountId] = useState(accounts[0]?.id ?? "new");
   const [accountName, setAccountName] = useState("Primary Account");
   const [institution, setInstitution] = useState("");
-  const [currency, setCurrency] = useState<Currency>(defaultCurrency);
+  const [currency, setCurrency] = useState<Currency>(
+    accounts[0]?.currency ?? defaultCurrency
+  );
   const [stage, setStage] = useState<ParseStage>("idle");
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
@@ -60,6 +63,19 @@ function UploadForm({ accounts, defaultCurrency }: UploadFormProps) {
       setError(null);
     }
   }
+
+  function handleAccountChange(value: string) {
+    setAccountId(value);
+    if (value !== "new") {
+      const account = accounts.find((a) => a.id === value);
+      if (account) setCurrency(account.currency);
+    }
+  }
+
+  const accountItems = [
+    { value: "new", label: "+ New account" },
+    ...accounts.map((a) => ({ value: a.id, label: `${a.name} · ${a.currency}` })),
+  ];
 
   async function handleUpload() {
     if (!file) {
@@ -163,33 +179,33 @@ function UploadForm({ accounts, defaultCurrency }: UploadFormProps) {
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <Label>Account</Label>
-              <Select value={accountId} onValueChange={(v) => v && setAccountId(v)}>
-                <SelectTrigger>
+              <Select
+                value={accountId}
+                items={accountItems}
+                onValueChange={(v) => v && handleAccountChange(v)}
+              >
+                <SelectTrigger className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="new">+ New account</SelectItem>
-                  {accounts.map((a) => (
-                    <SelectItem key={a.id} value={a.id}>
-                      {a.name} ({a.currency})
+                  {accountItems.map((item) => (
+                    <SelectItem key={item.value} value={item.value}>
+                      {item.label}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2">
-              <Label>Currency</Label>
-              <Select value={currency} onValueChange={(v) => v && setCurrency(v as Currency)}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="USD">USD ($)</SelectItem>
-                  <SelectItem value="GBP">GBP (£)</SelectItem>
-                  <SelectItem value="EUR">EUR (€)</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            {accountId === "new" && (
+              <div className="space-y-2 sm:col-span-2">
+                <Label htmlFor="account-currency">Account currency</Label>
+                <CurrencySelect
+                  id="account-currency"
+                  value={currency}
+                  onValueChange={(v) => setCurrency(v as Currency)}
+                />
+              </div>
+            )}
           </div>
 
           {accountId === "new" && (

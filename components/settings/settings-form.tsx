@@ -7,13 +7,7 @@ import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { CurrencySelect } from "@/components/ui/currency-select";
 import {
   Card,
   CardContent,
@@ -56,7 +50,10 @@ export function SettingsForm({ profile }: SettingsFormProps) {
     setSaving(false);
 
     if (!res.ok) {
-      toast.error("Failed to save settings");
+      const data = await res.json().catch(() => ({}));
+      toast.error(
+        typeof data.error === "string" ? data.error : "Failed to save settings"
+      );
       return;
     }
     toast.success("Settings saved");
@@ -79,7 +76,7 @@ export function SettingsForm({ profile }: SettingsFormProps) {
 
   return (
     <div className="space-y-6 max-w-lg">
-      <Card className="border-border/60 bg-card/50">
+      <Card className="overflow-visible border-border/60 bg-card/50">
         <CardHeader>
           <CardTitle>Profile</CardTitle>
           <CardDescription>Your display preferences</CardDescription>
@@ -94,17 +91,15 @@ export function SettingsForm({ profile }: SettingsFormProps) {
             />
           </div>
           <div className="space-y-2">
-            <Label>Default currency</Label>
-            <Select value={currency} onValueChange={(v) => v && setCurrency(v as Currency)}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="USD">USD ($)</SelectItem>
-                <SelectItem value="GBP">GBP (£)</SelectItem>
-                <SelectItem value="EUR">EUR (€)</SelectItem>
-              </SelectContent>
-            </Select>
+            <Label htmlFor="default-currency">Default currency</Label>
+            <CurrencySelect
+              id="default-currency"
+              value={currency}
+              onValueChange={(v) => setCurrency(v as Currency)}
+            />
+            <p className="text-xs text-muted-foreground">
+              Net worth, dashboard totals, and mixed-currency amounts convert to this currency.
+            </p>
           </div>
           <Button
             onClick={handleSave}

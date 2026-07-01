@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { UploadPageClient } from "@/components/upload/upload-form";
-import type { Account, Currency, Profile } from "@/lib/types/database";
+import { getBaseCurrency, getUserProfile } from "@/lib/finance/profile";
+import type { Account } from "@/lib/types/database";
 
 export default async function UploadPage() {
   const supabase = await createClient();
@@ -8,11 +9,8 @@ export default async function UploadPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", user!.id)
-    .single();
+  const profile = await getUserProfile(supabase, user!.id);
+  const baseCurrency = getBaseCurrency(profile);
 
   const { data: accounts } = await supabase
     .from("accounts")
@@ -29,7 +27,7 @@ export default async function UploadPage() {
       <div className="mt-8">
         <UploadPageClient
           accounts={(accounts ?? []) as Account[]}
-          defaultCurrency={((profile as Profile | null)?.default_currency ?? "USD") as Currency}
+          defaultCurrency={baseCurrency}
         />
       </div>
     </div>

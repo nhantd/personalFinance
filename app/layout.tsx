@@ -41,7 +41,10 @@ export default function RootLayout({
       lang="en"
       className={`${dmSans.variable} ${newsreader.variable} ${jetbrainsMono.variable} h-full`}
     >
-      <body className="min-h-full flex flex-col bg-background font-sans text-foreground">
+      <body
+        suppressHydrationWarning
+        className="min-h-full flex flex-col bg-background font-sans text-foreground"
+      >
         {children}
         <Toaster richColors position="top-right" />
       </body>

@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { isSupportedCurrency } from "@/lib/currencies";
+import { ensureUserProfile } from "@/lib/finance/profile";
+import type { Currency } from "@/lib/types/database";
 
 export async function DELETE() {
   const supabase = await createClient();
@@ -42,6 +47,8 @@ export async function DELETE() {
   await supabase.from("transactions").delete().eq("user_id", user.id);
   await supabase.from("statements").delete().eq("user_id", user.id);
   await supabase.from("chat_sessions").delete().eq("user_id", user.id);
+  await supabase.from("asset_snapshots").delete().eq("user_id", user.id);
+  await supabase.from("assets").delete().eq("user_id", user.id);
   await supabase.from("accounts").delete().eq("user_id", user.id);
 
   return NextResponse.json({ success: true });
@@ -57,20 +64,56 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { default_currency, display_name } = await request.json();
+  const patchSchema = z.object({
+    display_name: z.string().optional(),
+    default_currency: z
+      .string()
+      .refine(isSupportedCurrency, "Unsupported currency")
+      .optional(),
+  });
 
-  const updates: Record<string, string> = {};
-  if (default_currency) updates.default_currency = default_currency;
+  const body = patchSchema.parse(await request.json());
+  const { default_currency, display_name } = body;
+
+  const updates: Record<string, string | null> = {};
+  if (default_currency) updates.default_currency = default_currency.toUpperCase();
   if (display_name !== undefined) updates.display_name = display_name;
 
-  const { error } = await supabase
+  if (Object.keys(updates).length === 0) {
+    return NextResponse.json({ error: "No updates provided" }, { status: 400 });
+  }
+
+  try {
+    await ensureUserProfile(supabase, user.id, {
+      display_name: user.email?.split("@")[0] ?? null,
+      default_currency: (default_currency?.toUpperCase() ?? "USD") as Currency,
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Failed to ensure profile";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+
+  const { data, error } = await supabase
     .from("profiles")
     .update(updates)
-    .eq("id", user.id);
+    .eq("id", user.id)
+    .select("*")
+    .maybeSingle();
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ success: true });
+  if (!data) {
+    return NextResponse.json({ error: "Profile not found after update" }, { status: 500 });
+  }
+
+  revalidatePath("/dashboard");
+  revalidatePath("/net-worth");
+  revalidatePath("/investments");
+  revalidatePath("/transactions");
+  revalidatePath("/upload");
+  revalidatePath("/settings");
+
+  return NextResponse.json({ success: true, profile: data });
 }

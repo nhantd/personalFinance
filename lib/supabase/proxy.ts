@@ -4,9 +4,11 @@ import { NextResponse, type NextRequest } from "next/server";
 function isProtectedRoute(pathname: string) {
   return (
     pathname.startsWith("/dashboard") ||
+    pathname.startsWith("/budget") ||
+    pathname.startsWith("/net-worth") ||
+    pathname.startsWith("/investments") ||
     pathname.startsWith("/upload") ||
     pathname.startsWith("/transactions") ||
-    pathname.startsWith("/chat") ||
     pathname.startsWith("/settings")
   );
 }

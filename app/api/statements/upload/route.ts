@@ -2,11 +2,16 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 
+import { isSupportedCurrency } from "@/lib/currencies";
+
 const uploadSchema = z.object({
   accountId: z.string().uuid().optional(),
   accountName: z.string().min(1).optional(),
   institution: z.string().optional(),
-  currency: z.enum(["GBP", "USD", "EUR"]).default("USD"),
+  currency: z
+    .string()
+    .refine(isSupportedCurrency, "Unsupported currency")
+    .default("USD"),
   fileType: z.enum(["csv", "pdf"]),
   fileName: z.string().min(1),
 });
@@ -43,7 +48,18 @@ export async function POST(request: Request) {
 
     let accountId = metadata.accountId;
 
-    if (!accountId) {
+    if (accountId) {
+      const { data: existingAccount, error: accountFetchError } = await supabase
+        .from("accounts")
+        .select("id, currency")
+        .eq("id", accountId)
+        .eq("user_id", user.id)
+        .single();
+
+      if (accountFetchError || !existingAccount) {
+        return NextResponse.json({ error: "Account not found" }, { status: 404 });
+      }
+    } else {
       const { data: account, error: accountError } = await supabase
         .from("accounts")
         .insert({

@@ -1,6 +1,9 @@
+import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
-import { TransactionsTable } from "@/components/transactions/transactions-table";
-import type { Currency, Profile, Transaction } from "@/lib/types/database";
+import { TransactionsClient } from "@/components/transactions/transactions-client";
+import { TransactionsPageSkeleton } from "@/components/skeletons/page-skeletons";
+import { getBaseCurrency, getUserProfile } from "@/lib/finance/profile";
+import type { Account, Transaction } from "@/lib/types/database";
 
 export default async function TransactionsPage() {
   const supabase = await createClient();
@@ -8,30 +11,29 @@ export default async function TransactionsPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", user!.id)
-    .single();
+  const profile = await getUserProfile(supabase, user!.id);
+  const baseCurrency = getBaseCurrency(profile);
 
-  const { data: transactions } = await supabase
-    .from("transactions")
-    .select("*")
-    .eq("user_id", user!.id)
-    .order("date", { ascending: false });
+  const [{ data: transactions }, { data: accounts }] = await Promise.all([
+    supabase
+      .from("transactions")
+      .select("*")
+      .eq("user_id", user!.id)
+      .order("date", { ascending: false }),
+    supabase
+      .from("accounts")
+      .select("*")
+      .eq("user_id", user!.id)
+      .order("created_at", { ascending: true }),
+  ]);
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold tracking-tight">Transactions</h1>
-      <p className="mt-1 text-muted-foreground">
-        All parsed transactions. Override categories as needed.
-      </p>
-      <div className="mt-8">
-        <TransactionsTable
-          initialTransactions={(transactions ?? []) as Transaction[]}
-          currency={((profile as Profile | null)?.default_currency ?? "USD") as Currency}
-        />
-      </div>
-    </div>
+    <Suspense fallback={<TransactionsPageSkeleton />}>
+      <TransactionsClient
+        transactions={(transactions ?? []) as Transaction[]}
+        accounts={(accounts ?? []) as Account[]}
+        profileCurrency={baseCurrency}
+      />
+    </Suspense>
   );
 }

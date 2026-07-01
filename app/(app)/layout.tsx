@@ -1,6 +1,13 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { AppNav } from "@/components/app/app-nav";
+import { AppMobileHeader } from "@/components/app/app-mobile-header";
+import { AppMobileNav } from "@/components/app/app-mobile-nav";
+import { AppSidebar } from "@/components/app/app-sidebar";
+import { AskMonaeBubble } from "@/components/chat/ask-monae-bubble";
+import { AskMonaeProvider } from "@/components/chat/ask-monae-provider";
+import { ensureUserProfile } from "@/lib/finance/profile";
+
+export const dynamic = "force-dynamic";
 
 export default async function AppLayout({
   children,
@@ -16,10 +23,23 @@ export default async function AppLayout({
     redirect("/login");
   }
 
+  await ensureUserProfile(supabase, user.id, {
+    display_name: user.email?.split("@")[0] ?? null,
+  });
+
   return (
-    <div className="flex min-h-screen flex-col">
-      <AppNav />
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">{children}</main>
-    </div>
+    <AskMonaeProvider>
+      <div className="flex min-h-screen">
+        <AppSidebar />
+        <div className="flex min-w-0 flex-1 flex-col">
+          <AppMobileHeader />
+          <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 pb-20 sm:px-6 md:pb-8">
+            {children}
+          </main>
+          <AppMobileNav />
+        </div>
+      </div>
+      <AskMonaeBubble />
+    </AskMonaeProvider>
   );
 }
